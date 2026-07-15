@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>COQ Practice Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0f1526;
+    --ink-2:#161f38;
+    --parchment:#f3ead9;
+    --parchment-dim:#e7dcc6;
+    --brass:#c99a3f;
+    --brass-soft:#e0c07a;
+    --crimson:#b8402f;
+    --crimson-soft:#d97e6c;
+    --text-dim:#c3c2b8;
+    --text-faint:#8b8d9c;
+    --ok:#5c8a5c;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 15% 0%, #1c2745 0%, transparent 45%),
+      radial-gradient(circle at 90% 10%, #1a2340 0%, transparent 40%),
+      var(--ink);
+    color:var(--text-dim);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 0 80px;}
+
+  /* HEADER */
+  header{
+    position:sticky; top:0; z-index:30;
+    background:linear-gradient(180deg, var(--ink) 70%, transparent);
+    padding:22px 20px 10px;
+    backdrop-filter:blur(6px);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--brass-soft); margin-bottom:6px; display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--crimson);box-shadow:0 0 8px var(--crimson);}
+  h1{
+    font-family:'Fraunces',serif; font-weight:700; font-style:italic;
+    font-size:clamp(28px,7vw,40px); margin:0 0 4px; color:var(--parchment);
+    letter-spacing:-0.01em;
+  }
+  .subhead{font-size:13.5px; color:var(--text-faint); margin:0 0 16px; max-width:60ch; line-height:1.5;}
+
+  /* STATS BAR */
+  .stats{
+    display:flex; gap:18px; padding:10px 14px; margin-bottom:14px;
+    background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07);
+    border-radius:10px; font-family:'IBM Plex Mono',monospace; font-size:12px;
+    color:var(--text-dim); overflow-x:auto; white-space:nowrap;
+  }
+  .stat b{color:var(--brass-soft); font-size:14px;}
+
+  /* CHIPS */
+  .chiprow{
+    display:flex; gap:8px; overflow-x:auto; padding:2px 2px 14px;
+    scrollbar-width:none;
+  }
+  .chiprow::-webkit-scrollbar{display:none;}
+  .chip{
+    flex:0 0 auto; font-family:'IBM Plex Mono',monospace; font-size:11.5px;
+    letter-spacing:.03em; padding:7px 13px; border-radius:20px;
+    border:1px solid rgba(255,255,255,0.14); color:var(--text-dim);
+    background:rgba(255,255,255,0.02); cursor:pointer; user-select:none;
+    transition:all .15s ease; white-space:nowrap;
+  }
+  .chip:hover{border-color:var(--brass);}
+  .chip.active{background:var(--brass); border-color:var(--brass); color:#1a1305; font-weight:600;}
+
+  .toolbar{display:flex; gap:8px; padding:0 20px 4px; flex-wrap:wrap;}
+  .btn{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.04em;
+    padding:8px 14px; border-radius:8px; border:1px solid var(--crimson-soft);
+    background:rgba(184,64,47,0.12); color:var(--crimson-soft); cursor:pointer;
+  }
+  .btn.secondary{border-color:rgba(255,255,255,0.16); background:transparent; color:var(--text-dim);}
+  .btn:active{transform:scale(.97);}
+
+  main{padding:8px 20px 0;}
+
+  .section-head{
+    display:flex; align-items:baseline; gap:10px; margin:34px 0 14px;
+  }
+  .section-head .idx{font-family:'IBM Plex Mono',monospace; color:var(--brass); font-size:13px;}
+  .section-head h2{
+    font-family:'Fraunces',serif; font-weight:600; font-size:22px; margin:0;
+    color:var(--parchment);
+  }
+  .section-head .count{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-faint); margin-left:auto;
+  }
+  .section-line{height:1px; background:linear-gradient(90deg, rgba(201,154,63,0.5), transparent); margin-bottom:16px;}
+
+  .grid{display:grid; grid-template-columns:1fr; gap:14px;}
+  @media(min-width:640px){ .grid{grid-template-columns:1fr 1fr;} }
+
+  /* CARD */
+  .card{
+    perspective:1200px; height:auto; cursor:pointer;
+  }
+  .card-inner{
+    position:relative; min-height:168px; transform-style:preserve-3d;
+    transition:transform .55s cubic-bezier(.4,.2,.2,1);
+  }
+  .card.flipped .card-inner{transform:rotateY(180deg);}
+  .face{
+    position:absolute; inset:0; backface-visibility:hidden;
+    border-radius:10px; padding:18px 18px 16px;
+    display:flex; flex-direction:column;
+  }
+  .face.front{
+    background:var(--parchment); color:#26210f;
+    border:1px solid var(--parchment-dim);
+    box-shadow:0 3px 0 rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.25);
+  }
+  .face.back{
+    background:linear-gradient(160deg,#22304f,#182342);
+    color:var(--parchment);
+    transform:rotateY(180deg);
+    border:1px solid rgba(201,154,63,0.35);
+    box-shadow:0 3px 0 rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.35);
+  }
+  .qnum{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.06em;
+    color:#8a7a4a; text-transform:uppercase; margin-bottom:8px;
+  }
+  .qtext{font-size:14.5px; line-height:1.48; font-weight:500; flex:1;}
+  .tapline{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; color:#9c8a55;
+    margin-top:10px; letter-spacing:.05em;
+  }
+  .ans-label{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em;
+    color:var(--brass-soft); text-transform:uppercase; margin-bottom:6px;
+  }
+  .ans-text{
+    font-family:'Fraunces',serif; font-weight:600; font-size:19px; margin-bottom:8px; color:#fff;
+  }
+  .funda{font-size:12.5px; line-height:1.5; color:#c9cbdc; flex:1;}
+  .funda b{color:var(--brass-soft);}
+  .card-actions{display:flex; gap:8px; margin-top:10px;}
+  .mini-btn{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; padding:5px 10px;
+    border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.04);
+    color:var(--text-dim); cursor:pointer;
+  }
+  .mini-btn.got{border-color:var(--ok); color:var(--ok);}
+  .mini-btn.got.active{background:var(--ok); color:#0f1a0f; font-weight:600;}
+  .mini-btn.miss{border-color:var(--crimson-soft); color:var(--crimson-soft);}
+  .mini-btn.miss.active{background:var(--crimson-soft); color:#2a0f0a; font-weight:600;}
+  .card.marked-got .face.front{box-shadow:0 3px 0 rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.25), 0 0 0 2px var(--ok) inset;}
+  .card.marked-miss .face.front{box-shadow:0 3px 0 rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.25), 0 0 0 2px var(--crimson-soft) inset;}
+
+  footer{
+    text-align:center; padding:30px 20px; font-family:'IBM Plex Mono',monospace;
+    font-size:11px; color:var(--text-faint);
+  }
+
+  ::selection{background:var(--brass); color:#1a1305;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow"><span class="dot"></span>COLUMBAN OPEN QUIZ · PRACTICE DECK</div>
+    <h1>Fund&#257; Deck, Round One</h1>
+    <p class="subhead">13 priority categories, built as buildup-clue &rarr; answer flashcards. Tap a card to flip it. Mark what you knew cold and what needs a re-look &mdash; your marks are saved on this device.</p>
+    <div class="stats" id="statsBar"></div>
+    <div class="chiprow" id="chipRow"></div>
+    <div class="toolbar">
+      <button class="btn" id="shuffleBtn">&#8635; Shuffle order</button>
+      <button class="btn secondary" id="resetBtn">Reset marks</button>
+      <button class="btn secondary" id="flipAllBtn">Flip all</button>
+    </div>
+  </header>
+  <main id="main"></main>
+  <footer>13 of 26 categories included &mdash; ask for the rest (Art, Geography, Mythology, Indian Literature, F1, Man Utd &amp; PL, and more) any time.</footer>
+</div>
+
+<script>
+const DATA = [
+{cat:"Columban Literature", items:[
+ {q:"This 1949 dystopia gave English the terms Big Brother, doublethink, and Room 101, set in a superstate called Oceania.", a:"1984", f:"<b>Orwell</b> wrote much of it while dying of tuberculosis on the remote Scottish isle of Jura."},
+ {q:"In this Orwell allegory, the pigs Napoleon and Snowball stand in for Stalin and Trotsky, and the ending sees pigs and humans become indistinguishable.", a:"Animal Farm", f:"The farm itself, Manor Farm, is renamed 'Animal Farm' after the revolt &mdash; only to be renamed back at the very end."},
+ {q:"Huxley's dystopia imagines a 'World State' where humans are hatched in bottles, sorted into castes, and kept docile with a drug called soma.", a:"Brave New World", f:"Huxley wrote it partly as a reply to H.G. Wells' utopian optimism &mdash; he thought comfort, not cruelty, would be how freedom died."},
+ {q:"Bradbury's novel is named for the temperature at which book paper is said to catch fire, in a future where firemen burn books instead of putting out fires.", a:"Fahrenheit 451", f:"Bradbury reportedly wrote the first draft on rented typewriters in a library basement, paying by the hour &mdash; fitting, for a book about books."},
+ {q:"Kafka's unfinished novel follows Josef K., arrested and prosecuted by an inaccessible, faceless court for a crime never named to him or the reader.", a:"The Trial", f:"Kafka never finished it and asked his friend Max Brod to burn all his manuscripts after his death &mdash; Brod published them instead."},
+ {q:"In this Dostoevsky novel, the impoverished student Raskolnikov murders a pawnbroker to test his theory that certain 'extraordinary' men are above conventional morality.", a:"Crime and Punishment", f:"The novel is set in St. Petersburg's slums, which Dostoevsky knew firsthand &mdash; he'd himself faced a mock execution before a Tsarist reprieve."},
+ {q:"Garc&iacute;a M&aacute;rquez's magical-realist saga follows seven generations of the Buend&iacute;a family in the fictional town of Macondo.", a:"One Hundred Years of Solitude", f:"The book is often credited with bringing 'magical realism' to a global readership; Garc&iacute;a M&aacute;rquez won the Nobel Prize in Literature in 1982."},
+ {q:"Joyce's novel compresses Homer's Odyssey into a single day &mdash; June 16 &mdash; followed by Leopold Bloom around Dublin, a date now celebrated annually by fans.", a:"Ulysses", f:"That annual celebration is called 'Bloomsday.' The book was banned in the US and UK for over a decade for obscenity."}
+]},
+
+{cat:"Films", items:[
+ {q:"Orson Welles' directorial debut, frequently topping 'greatest films ever' lists, centers on a dying press baron whose final word is a mystery.", a:"Citizen Kane", f:"That word, 'Rosebud,' turns out to name a childhood sled &mdash; a symbol of the one thing money couldn't buy back."},
+ {q:"Kurosawa's film recounts a single crime through four wildly contradictory eyewitness accounts, lending its name to a now-common storytelling term.", a:"Rashomon", f:"'The Rashomon effect' is now used across law, journalism and psychology for conflicting accounts of the same event."},
+ {q:"This Wachowski-directed film introduced 'red pill vs. blue pill' into everyday pop-culture vocabulary.", a:"The Matrix", f:"The film borrowed heavily from Baudrillard's philosophy text 'Simulacra and Simulation' &mdash; which briefly appears on-screen as a hollowed-out book."},
+ {q:"Bong Joon-ho's film about the Kim family infiltrating the wealthy Park household became the first non-English-language film to win Best Picture.", a:"Parasite", f:"It won that Oscar in 2020, the same night Bong also won Best Director and Best Original Screenplay."},
+ {q:"In this Nolan heist film, teams enter shared dreams to plant an idea, and the ending famously leaves a spinning top's fate ambiguous.", a:"Inception", f:"Nolan has said the ending is intentionally unresolved &mdash; the point is that Cobb no longer cares whether it's real."},
+ {q:"Coppola's Vietnam War epic loosely reimagines Joseph Conrad's 'Heart of Darkness,' following a mission to 'terminate with extreme prejudice' a renegade colonel.", a:"Apocalypse Now", f:"Its production was so famously chaotic (typhoons, a heart attack, Brando arriving overweight and unprepared) that it inspired its own documentary, 'Hearts of Darkness.'"},
+ {q:"Villeneuve's sequel to a 1982 Ridley Scott sci-fi noir continues to ask what separates humans from artificial replicants.", a:"Blade Runner 2049", f:"The original 1982 film was itself based on Philip K. Dick's novel 'Do Androids Dream of Electric Sheep?'"},
+ {q:"Tarantino's nonlinear crime film is structured as interlocking stories told out of chronological order, reviving John Travolta's career.", a:"Pulp Fiction", f:"It won the Palme d'Or at Cannes in 1994 and is credited with popularizing non-linear, chapter-based screenwriting in mainstream cinema."}
+]},
+
+{cat:"History", items:[
+ {q:"This trilingual stele, discovered by French soldiers in Egypt in 1799, gave scholars the key to finally decoding hieroglyphs.", a:"Rosetta Stone", f:"The same decree appears in Greek, Demotic, and hieroglyphic script &mdash; Jean-Fran&ccedil;ois Champollion cracked it in 1822 using the Greek as a key."},
+ {q:"This 1215 charter, forced on King John of England by rebel barons, established for the first time that even the monarch is subject to the law.", a:"Magna Carta", f:"Most of its original clauses (about feudal fishing weirs and forest rights) are now obsolete &mdash; only a handful, including due process, still matter legally."},
+ {q:"Erected almost overnight in 1961 and torn down amid celebration in 1989, this structure physically divided a European city for 28 years.", a:"Berlin Wall", f:"Its fall wasn't planned for that night &mdash; an East German spokesman misspoke at a press conference, and guards, confused, simply opened the gates."},
+ {q:"Codename for the secret US programme that built the atomic bomb during WWII, its scientific side was led by J. Robert Oppenheimer at Los Alamos.", a:"Manhattan Project", f:"It employed over 130,000 people at its peak, most of whom had no idea what they were actually building."},
+ {q:"This 13-day 1962 standoff, sparked by Soviet missiles placed in Cuba, is widely considered the closest the Cold War came to turning nuclear.", a:"Cuban Missile Crisis", f:"It was resolved partly through a secret, unpublicized deal: the US quietly agreed to remove its own missiles from Turkey."},
+ {q:"In 1930, Gandhi walked roughly 240 miles from Sabarmati to the coastal town of Dandi to defy a British colonial tax on a basic commodity.", a:"Salt March", f:"The tax was on salt itself &mdash; Gandhi picked it deliberately because it touched every Indian household, rich or poor."},
+ {q:"This 1929 crash on a single American exchange triggered a decade-long global economic collapse known as the Great Depression.", a:"Wall Street Crash of 1929", f:"'Black Tuesday,' October 29, saw a then-record 16 million shares traded in a single panicked session."},
+ {q:"On July 20, 1969, two astronauts became the first humans to walk on a surface beyond Earth, while a third orbited alone above them.", a:"Moon landing (Apollo 11)", f:"That third astronaut, Michael Collins, orbiting solo, has said he never felt lonely &mdash; just aware he was the only human who couldn't see both his crewmates and Earth at once."}
+]},
+
+{cat:"Science", items:[
+ {q:"This gene-editing tool, adapted from a bacterial immune defence system, won its discoverers the 2020 Nobel Prize in Chemistry.", a:"CRISPR", f:"It lets scientists cut and edit DNA at precise locations &mdash; the 2020 Nobel went to Jennifer Doudna and Emmanuelle Charpentier, the first all-woman science Nobel pairing."},
+ {q:"This thought experiment imagines a cat in a sealed box that is, according to quantum rules, simultaneously alive and dead until someone looks.", a:"Schr&ouml;dinger's cat", f:"Schr&ouml;dinger devised it not to explain quantum mechanics but to mock it &mdash; he thought the idea of a literally half-dead cat exposed how absurd the theory sounded when scaled up."},
+ {q:"Turing proposed this test for machine intelligence: if a human judge can't reliably tell a machine's text responses from a person's, the machine passes.", a:"Turing test", f:"Turing originally called it 'the imitation game' in his 1950 paper &mdash; the same phrase later used as the title of the 2014 biopic about him."},
+ {q:"Launched in 2021 as Hubble's successor, this space telescope observes mostly in infrared to peer through cosmic dust to the universe's earliest galaxies.", a:"James Webb Space Telescope", f:"It sits about 1.5 million km from Earth, at a gravitationally stable point called L2 &mdash; far too distant for any repair mission like Hubble's."},
+ {q:"Discovered almost by accident in 1928 when a stray mould contaminated a lab dish, this became the world's first mass-produced antibiotic.", a:"Penicillin", f:"Alexander Fleming initially struggled to get anyone interested; it took a decade and a separate Oxford team (Florey and Chain) to turn it into a usable drug."},
+ {q:"Einstein's theory, split into a 1905 'special' version and a 1915 'general' one, redefined gravity as the curvature of space and time itself.", a:"Theory of relativity", f:"General relativity predicted gravitational waves nearly a century before LIGO directly detected them in 2015."},
+ {q:"The double-helix structure of this molecule was published by Watson and Crick in 1953, built substantially on unpublished X-ray data from a colleague who received no Nobel recognition in her lifetime.", a:"DNA", f:"That colleague was Rosalind Franklin, who died in 1958; Nobel Prizes are never awarded posthumously, which some argue cost her the credit."},
+ {q:"This underground physics facility straddling the France-Switzerland border confirmed the existence of the Higgs boson in 2012.", a:"Large Hadron Collider (CERN)", f:"At 27 km in circumference, it's the world's largest and most powerful particle accelerator, smashing protons at near light-speed."}
+]},
+
+{cat:"World Affairs", items:[
+ {q:"This 1978 US-brokered accord between Egypt's Anwar Sadat and Israel's Menachem Begin led to a lasting peace treaty the following year.", a:"Camp David Accords", f:"Both leaders shared the 1978 Nobel Peace Prize; Sadat was later assassinated by militants opposed to the treaty."},
+ {q:"This Israeli missile defence system is designed to intercept short-range rockets before they reach populated areas.", a:"Iron Dome", f:"It calculates a rocket's likely landing spot in seconds and only fires if that spot is populated &mdash; letting rockets headed for open fields simply fall."},
+ {q:"This grouping originally comprising Brazil, Russia, India, China and South Africa has since expanded to include several more nations.", a:"BRICS", f:"The acronym was originally coined by a Goldman Sachs economist in 2001 as an investment term, before the countries themselves adopted it as a political grouping."},
+ {q:"Formed in 1949 principally to counter Soviet expansion in postwar Europe, this military alliance now includes over 30 member states.", a:"NATO", f:"Its founding principle, Article 5, treats an attack on one member as an attack on all &mdash; invoked for the first and only time after 9/11, in defence of the US."},
+ {q:"In a 2020 referendum-driven process, the United Kingdom formally exited this European political and economic union.", a:"Brexit (European Union)", f:"The 2016 referendum passed by a narrow 52-48 margin; the actual legal exit didn't complete until January 2020."},
+ {q:"This Chinese-led global infrastructure and investment strategy, launched in 2013, has been compared to a modern revival of the ancient Silk Road.", a:"Belt and Road Initiative", f:"It spans ports, railways and pipelines across dozens of countries, and is sometimes described by critics as 'debt-trap diplomacy.'"},
+ {q:"Headquartered in New York, this body's Security Council holds five permanent members each wielding an absolute veto.", a:"United Nations", f:"Those five permanent members &mdash; the US, UK, France, Russia, and China &mdash; are essentially the victorious powers of World War II."}
+]},
+
+{cat:"Sports", items:[
+ {q:"In the 1986 World Cup quarter-final, this goal was scored with a fist rather than a head, though the referee didn't spot it.", a:"Hand of God (goal)", f:"Maradona scored a second goal minutes later, dribbling past five England players, often called the 'Goal of the Century' &mdash; same match, same player."},
+ {q:"This famed youth academy at Barcelona's training ground has produced players like Messi, Xavi and Iniesta.", a:"La Masia", f:"The name literally means 'the farmhouse' in Catalan &mdash; it was originally a real farmhouse before becoming the club's residential academy."},
+ {q:"In 1985, a wall collapse during crowd violence before a Liverpool-Juventus European Cup Final in Belgium killed 39 people and led to a five-year ban on English clubs in Europe.", a:"Heysel Stadium disaster", f:"Liverpool would go on to be involved in another fatal stadium disaster four years later, at Hillsborough, this time as victims of a crowd-crush rather than violence."},
+ {q:"This 1958 air crash in Germany killed several of Manchester United's young 'Busby Babes' squad, including three future England internationals.", a:"Munich air disaster", f:"Manager Matt Busby himself survived, despite being read the last rites twice, and rebuilt the club within a decade to European champions."},
+ {q:"This Netflix docuseries followed Michael Jordan's Chicago Bulls through their final championship season, drawing on previously unseen behind-the-scenes footage.", a:"The Last Dance", f:"The footage had been filmed in 1997-98 by a crew given unprecedented access, then sat unused for over 20 years before Jordan agreed to its release."},
+ {q:"This controversial 1932-33 England bowling tactic aimed at the batsman's body, largely to neutralise Don Bradman, nearly caused a diplomatic rift with Australia.", a:"Bodyline", f:"It worked &mdash; Bradman's average that series dropped to 56.57, still remarkable, but far below his career average of 99.94."},
+ {q:"This statistical formula recalculates revised targets in limited-overs cricket matches interrupted by rain.", a:"Duckworth-Lewis-Stern method", f:"It was first used in international cricket in 1997 and updated with statistician Steven Stern's refinements in 2014, adding his name to the original Duckworth-Lewis method."}
+]},
+
+{cat:"Business & Economics", items:[
+ {q:"Warren Buffett transformed this Omaha-based company, originally a failing New England textile manufacturer, into a vast holding conglomerate.", a:"Berkshire Hathaway", f:"Buffett has called buying the original textile company itself one of his biggest investment mistakes, despite the empire built around it."},
+ {q:"This Taiwanese company fabricates advanced chips for Apple and Nvidia, making it the world's dominant contract chipmaker.", a:"TSMC", f:"Its near-monopoly on cutting-edge chip fabrication has made Taiwan's geopolitical status a matter of global economic anxiety, not just a regional one."},
+ {q:"The identity of this pseudonymous creator of Bitcoin, who vanished from public view around 2011, remains officially unconfirmed.", a:"Satoshi Nakamoto", f:"Whoever it is (or they are) reportedly holds roughly a million untouched early bitcoins, worth tens of billions of dollars at current prices."},
+ {q:"The 2008 bankruptcy of this 158-year-old investment bank became the emblematic moment of the global financial crisis.", a:"Lehman Brothers", f:"At the time it was the largest bankruptcy filing in US history, with over $600 billion in assets."},
+ {q:"This region south of San Francisco became the nucleus of the US tech industry, named for the material used in the semiconductors first made there.", a:"Silicon Valley", f:"It was popularized as a term by a journalist in 1971, referencing the silicon used in the chips of companies like Fairchild Semiconductor and Intel."},
+ {q:"This finance term describes a privately held startup valued at over one billion dollars.", a:"Unicorn (finance)", f:"It was coined in 2013 by venture capitalist Aileen Lee, who chose the word specifically because such companies were, at the time, statistically rare."},
+ {q:"Elon Musk's electric vehicle company takes its name from the 19th-century inventor of the AC induction motor.", a:"Tesla, Inc.", f:"Musk wasn't actually a founding employee &mdash; the company was founded by Martin Eberhard and Marc Tarpenning; Musk joined shortly after as an early investor."}
+]},
+
+{cat:"Technology", items:[
+ {q:"This observation holds that the number of transistors on a chip roughly doubles every two years, made by an Intel co-founder in 1965.", a:"Moore's Law", f:"Gordon Moore's original paper only projected the trend a decade forward &mdash; it has instead held, roughly, for over 50 years."},
+ {q:"This CERN researcher invented the World Wide Web in 1989 as a way for scientists to share documents across different computers.", a:"Tim Berners-Lee (World Wide Web)", f:"He deliberately chose not to patent his invention, believing an open, free web would grow faster and further than a licensed one."},
+ {q:"This free, open-source operating system kernel was created by a Finnish student in 1991 and now underpins everything from Android phones to most of the internet's servers.", a:"Linux (Linus Torvalds)", f:"Torvalds originally wanted to call it 'Freax'; a colleague uploaded it to a server under the name 'Linux' instead, and the name stuck."},
+ {q:"Built in the US during WWII, this machine is often considered the first Turing-complete, general-purpose electronic computer.", a:"ENIAC", f:"It weighed nearly 30 tons and originally required a team of women &mdash; the 'ENIAC programmers' &mdash; to physically rewire it for each new task, since programming languages didn't yet exist."},
+ {q:"This peer-to-peer file-sharing protocol splits files into small pieces distributed among many users simultaneously, rather than one central server.", a:"BitTorrent", f:"It was created in 2001 by programmer Bram Cohen, partly to solve the bandwidth problem that had crippled centralized services like Napster."},
+ {q:"Often called the first computer programmer, this 19th-century mathematician wrote notes on Charles Babbage's unbuilt Analytical Engine that anticipated modern coding concepts.", a:"Ada Lovelace", f:"She was the only legitimate child of the poet Lord Byron, though her mother deliberately steered her toward mathematics to avoid what she saw as her father's 'madness.'"},
+ {q:"This 2010 malware is believed to have physically sabotaged centrifuges in Iran's nuclear enrichment programme.", a:"Stuxnet", f:"It's widely believed (though never officially confirmed) to have been a joint US-Israeli operation &mdash; one of the first known cyberweapons to cause physical damage."},
+ {q:"This 2018 EU law reshaped how companies worldwide must handle user data and consent, with fines reaching up to 4% of global revenue.", a:"General Data Protection Regulation (GDPR)", f:"It's why so many websites suddenly started showing cookie-consent pop-ups to every visitor, regardless of where they're browsing from."}
+]},
+
+{cat:"Indian Cinema — Classics & Regional", items:[
+ {q:"This 1975 multi-starrer, often called Bollywood's greatest film, features the dacoit villain Gabbar Singh and the line-perfect duo Jai and Veeru.", a:"Sholay", f:"It initially flopped in its opening week before word of mouth turned it into the highest-grossing Indian film of its era, running in one Mumbai theatre for over five continuous years."},
+ {q:"Satyajit Ray's directorial debut follows a poor Bengali family in rural Bengal and became the first part of a trilogy centered on young Apu.", a:"Pather Panchali", f:"Ray financed much of it himself, at one point pawning his wife's jewellery; it won a special award at Cannes in 1956."},
+ {q:"This actor, nicknamed the 'Angry Young Man' of 1970s Hindi cinema, rose to stardom through Salim-Javed scripted films like Zanjeer and Deewaar.", a:"Amitabh Bachchan", f:"He was reportedly rejected early on by All India Radio for having a voice deemed unsuitable &mdash; that same voice later became one of Indian cinema's most iconic."},
+ {q:"This scriptwriting duo, Salim Khan and Javed Akhtar, wrote Zanjeer, Deewaar and Sholay, effectively inventing the Bollywood 'angry young man' template.", a:"Salim-Javed", f:"They were, at the time, unusually credited and paid like stars themselves &mdash; unprecedented for writers in an industry usually built around actors."},
+ {q:"This 1995 romance, still running continuously at a single Mumbai theatre decades after release, is considered the longest continuously-screened film in Indian cinema history.", a:"Dilwale Dulhania Le Jayenge (DDLJ)", f:"That theatre is Maratha Mandir &mdash; the film has played there in an unbroken run since its 1995 release."},
+ {q:"This Tamil superstar, born Shivaji Rao Gaekwad, is known for his signature style of flipping cigarettes and sunglasses onscreen.", a:"Rajinikanth", f:"He worked as a bus conductor in Bangalore before joining a film institute and being spotted by director K. Balachander."},
+ {q:"This two-part period-action franchise, directed by S.S. Rajamouli, follows a prince's fight against a tyrant king and shattered Indian box-office records.", a:"Baahubali", f:"Its second part's opening weekend outgrossed several Hollywood blockbusters in India, and its cliffhanger question ('why did Kattappa kill Baahubali?') became a genuine national obsession before release."},
+ {q:"This 2018 biopic, starring Keerthy Suresh, dramatizes the rise and tragic decline of the Telugu-Tamil actress Savitri.", a:"Mahanati", f:"Savitri was one of South Indian cinema's biggest stars in the 1950s-60s before financial ruin and ill health led to her early death at 45."}
+]},
+
+{cat:"Indian History, Freedom Movement & Politics", items:[
+ {q:"In this 1919 Amritsar massacre, troops under General Dyer fired without warning on an unarmed crowd gathered in an enclosed garden.", a:"Jallianwala Bagh massacre", f:"The garden had only one narrow exit, which Dyer's troops blocked, trapping the crowd &mdash; some jumped into a well inside the garden to escape the gunfire."},
+ {q:"With Japanese backing during WWII, Subhas Chandra Bose organized this armed force to fight British colonial rule militarily rather than through non-violence.", a:"Indian National Army (Azad Hind Fauj)", f:"Its slogan 'Jai Hind' and rallying cry 'Give me blood, and I shall give you freedom' both trace back to Bose."},
+ {q:"For 21 months from 1975-77, Indira Gandhi suspended elections and civil liberties nationwide under a controversial constitutional provision.", a:"The Emergency (India)", f:"It was declared officially on grounds of 'internal disturbance,' shortly after a court found her guilty of electoral malpractice in her own 1971 election."},
+ {q:"Widely regarded as the principal architect of India's Constitution, this leader also served as independent India's first Law Minister.", a:"B. R. Ambedkar", f:"He chaired the Constitution's Drafting Committee and, born into a Dalit family, later led a mass conversion to Buddhism partly in protest against caste discrimination."},
+ {q:"As Finance Minister in 1991, this economist-politician liberalized India's economy amid a severe balance-of-payments crisis, later becoming Prime Minister.", a:"Manmohan Singh (1991 economic reforms)", f:"India had to physically airlift gold reserves to London as collateral for an IMF loan that same year &mdash; a low point the reforms were designed to prevent from recurring."},
+ {q:"This 17th-century Maratha king fought protracted campaigns against the Mughals and is celebrated today as a symbol of resistance and swaraj.", a:"Shivaji", f:"He's famous for a daring escape from house arrest under Aurangzeb, reportedly smuggled out of Agra hidden inside a basket of sweets."},
+ {q:"India's 1998 nuclear tests, conducted under the Vajpayee government at a desert site in Rajasthan, were code-named this.", a:"Pokhran-II", f:"The tests were conducted with such secrecy that US satellite surveillance, actively watching the site, reportedly failed to detect preparations in time."}
+]},
+
+{cat:"Indian Science & Scientists", items:[
+ {q:"This physicist remains the only person to win a Nobel Prize in the sciences for research carried out entirely within India, honoured in 1930 for his work on light scattering.", a:"C. V. Raman", f:"He reportedly got the idea for his prize-winning effect while observing the blue colour of the Mediterranean Sea on a ship voyage home from Europe."},
+ {q:"Often called the father of the Indian space programme, this physicist founded what became ISRO and pushed for India's first satellite launches.", a:"Vikram Sarabhai", f:"He convinced a young scientist, Abdul Kalam, to join the fledgling space programme &mdash; Kalam would later lead India's missile programme and become President."},
+ {q:"This largely self-taught mathematician from Madras sent his unconventional theorems to Cambridge professor G.H. Hardy, who recognised in them work 'of the very highest class.'", a:"Srinivasa Ramanujan", f:"He died at just 32, but Hardy later said discovering him was the one 'romantic incident' of his own mathematical life."},
+ {q:"This scientist, central to India's missile and nuclear programmes, later served as President of India and remains widely nicknamed the 'Missile Man of India.'", a:"A. P. J. Abdul Kalam", f:"Despite his scientific and political stature, he was known for living simply and reportedly requested his university salary be donated to a trust rather than kept."},
+ {q:"An entire class of subatomic particles is named 'bosons' in honour of this Indian physicist's statistical work, developed in correspondence with Einstein.", a:"Satyendra Nath Bose", f:"Bose never won a Nobel Prize for this foundational work, despite the particle class named for him underpinning much of modern quantum physics."},
+ {q:"This 2023 Indian lunar mission achieved a soft landing near the Moon's south pole, a region no other country's mission had successfully reached before.", a:"Chandrayaan-3", f:"It made India the fourth country to achieve any soft lunar landing, and the first to do so specifically near the lunar south pole."},
+ {q:"This agricultural scientist is widely credited as the chief architect of India's Green Revolution, helping introduce high-yield wheat and rice varieties from the 1960s.", a:"M. S. Swaminathan", f:"He worked closely with Norman Borlaug, the American 'father' of the broader global Green Revolution, adapting Borlaug's wheat varieties for Indian conditions."}
+]}
+];
+
+// ---------- render ----------
+let flat = [];
+DATA.forEach((sec, si) => sec.items.forEach((it, ii) => flat.push({...it, cat:sec.cat, id: si+'-'+ii})));
+
+const STORAGE_KEY = 'coq-deck-marks-v1';
+let marks = {};
+try { marks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e){ marks = {}; }
+function saveMarks(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(marks)); }catch(e){} }
+
+let activeCat = 'All';
+let order = DATA.map(s=>s.cat);
+
+function renderChips(){
+  const row = document.getElementById('chipRow');
+  row.innerHTML = '';
+  const all = document.createElement('div');
+  all.className = 'chip' + (activeCat==='All' ? ' active' : '');
+  all.textContent = 'All (' + flat.length + ')';
+  all.onclick = () => { activeCat='All'; renderChips(); renderMain(); };
+  row.appendChild(all);
+  DATA.forEach(sec=>{
+    const c = document.createElement('div');
+    c.className = 'chip' + (activeCat===sec.cat ? ' active' : '');
+    c.textContent = sec.cat.split(' ')[0] === 'Indian' ? sec.cat.replace('Indian ','IN: ') : sec.cat;
+    c.textContent += ' ('+sec.items.length+')';
+    c.onclick = () => { activeCat = sec.cat; renderChips(); renderMain(); };
+    row.appendChild(c);
+  });
+}
+
+function renderStats(){
+  const bar = document.getElementById('statsBar');
+  const total = flat.length;
+  const got = flat.filter(f=>marks[f.id]==='got').length;
+  const miss = flat.filter(f=>marks[f.id]==='miss').length;
+  bar.innerHTML =
+    '<div class="stat"><b>'+total+'</b> total</div>' +
+    '<div class="stat"><b>'+got+'</b> got it</div>' +
+    '<div class="stat"><b>'+miss+'</b> to review</div>' +
+    '<div class="stat"><b>'+DATA.length+'</b> categories</div>';
+}
+
+function cardHTML(it, globalIndex){
+  const markState = marks[it.id];
+  const markedClass = markState==='got' ? ' marked-got' : (markState==='miss' ? ' marked-miss' : '');
+  return `
+  <div class="card${markedClass}" data-id="${it.id}">
+    <div class="card-inner">
+      <div class="face front">
+        <div class="qnum">Q ${globalIndex} &middot; ${it.cat}</div>
+        <div class="qtext">${it.q}</div>
+        <div class="tapline">tap to reveal &rarr;</div>
+      </div>
+      <div class="face back">
+        <div class="ans-label">Answer</div>
+        <div class="ans-text">${it.a}</div>
+        <div class="funda"><b>Funda:</b> ${it.f}</div>
+        <div class="card-actions">
+          <button class="mini-btn got ${markState==='got'?'active':''}" data-act="got">Knew it</button>
+          <button class="mini-btn miss ${markState==='miss'?'active':''}" data-act="miss">Review</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderMain(){
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+  let gi = 1;
+  const sections = activeCat==='All' ? DATA : DATA.filter(s=>s.cat===activeCat);
+  sections.forEach((sec, si)=>{
+    const head = document.createElement('div');
+    head.className = 'section-head';
+    head.innerHTML = `<span class="idx">${String(si+1).padStart(2,'0')}</span><h2>${sec.cat}</h2><span class="count">${sec.items.length} cards</span>`;
+    main.appendChild(head);
+    const line = document.createElement('div');
+    line.className = 'section-line';
+    main.appendChild(line);
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    sec.items.forEach(it=>{
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = cardHTML(it, gi++);
+      grid.appendChild(wrapper.firstElementChild);
+    });
+    main.appendChild(grid);
+  });
+  attachHandlers();
+  renderStats();
+}
+
+function attachHandlers(){
+  document.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      if(e.target.closest('.mini-btn')) return;
+      card.classList.toggle('flipped');
+    });
+  });
+  document.querySelectorAll('.mini-btn').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const card = btn.closest('.card');
+      const id = card.dataset.id;
+      const act = btn.dataset.act;
+      marks[id] = (marks[id] === act) ? undefined : act;
+      if(marks[id] === undefined) delete marks[id];
+      saveMarks();
+      renderMain();
+    });
+  });
+}
+
+document.getElementById('shuffleBtn').onclick = () => {
+  DATA.forEach(sec=>{
+    for(let i=sec.items.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [sec.items[i], sec.items[j]] = [sec.items[j], sec.items[i]];
+    }
+  });
+  renderMain();
+};
+document.getElementById('resetBtn').onclick = () => {
+  marks = {};
+  saveMarks();
+  renderMain();
+};
+document.getElementById('flipAllBtn').onclick = () => {
+  document.querySelectorAll('.card').forEach(c=>c.classList.toggle('flipped'));
+};
+
+renderChips();
+renderMain();
+</script>
+</body>
+</html>
