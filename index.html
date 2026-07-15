@@ -3,374 +3,547 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>COQ Practice Deck</title>
+<title>COQ Practice Deck — Build-Ups &amp; Connects</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#0f1526;
-    --ink-2:#161f38;
-    --parchment:#f3ead9;
-    --parchment-dim:#e7dcc6;
-    --brass:#c99a3f;
-    --brass-soft:#e0c07a;
-    --crimson:#b8402f;
-    --crimson-soft:#d97e6c;
-    --text-dim:#c3c2b8;
-    --text-faint:#8b8d9c;
-    --ok:#5c8a5c;
+    --ink:#0f1526; --ink-2:#161f38;
+    --parchment:#f3ead9; --parchment-dim:#e7dcc6;
+    --brass:#c99a3f; --brass-soft:#e0c07a;
+    --crimson:#b8402f; --crimson-soft:#d97e6c;
+    --teal:#3f8a86; --teal-soft:#7fc4bf;
+    --text-dim:#c3c2b8; --text-faint:#8b8d9c; --ok:#5c8a5c;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background:
-      radial-gradient(circle at 15% 0%, #1c2745 0%, transparent 45%),
-      radial-gradient(circle at 90% 10%, #1a2340 0%, transparent 40%),
-      var(--ink);
-    color:var(--text-dim);
-    font-family:'Inter',sans-serif;
-    min-height:100vh;
-    -webkit-font-smoothing:antialiased;
+    background:radial-gradient(circle at 15% 0%, #1c2745 0%, transparent 45%),
+      radial-gradient(circle at 90% 10%, #1a2340 0%, transparent 40%), var(--ink);
+    color:var(--text-dim); font-family:'Inter',sans-serif; min-height:100vh; -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:900px;margin:0 auto;padding:0 0 80px;}
-
-  /* HEADER */
-  header{
-    position:sticky; top:0; z-index:30;
-    background:linear-gradient(180deg, var(--ink) 70%, transparent);
-    padding:22px 20px 10px;
-    backdrop-filter:blur(6px);
-  }
-  .eyebrow{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px; letter-spacing:.18em; text-transform:uppercase;
-    color:var(--brass-soft); margin-bottom:6px; display:flex; align-items:center; gap:8px;
-  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 0 80px;}
+  header{position:sticky; top:0; z-index:30; background:linear-gradient(180deg, var(--ink) 75%, transparent); padding:22px 20px 8px; backdrop-filter:blur(6px);}
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--brass-soft); margin-bottom:6px; display:flex; align-items:center; gap:8px;}
   .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--crimson);box-shadow:0 0 8px var(--crimson);}
-  h1{
-    font-family:'Fraunces',serif; font-weight:700; font-style:italic;
-    font-size:clamp(28px,7vw,40px); margin:0 0 4px; color:var(--parchment);
-    letter-spacing:-0.01em;
+  h1{font-family:'Fraunces',serif; font-weight:700; font-style:italic; font-size:clamp(26px,6.5vw,38px); margin:0 0 4px; color:var(--parchment); letter-spacing:-0.01em;}
+  .subhead{font-size:13px; color:var(--text-faint); margin:0 0 14px; max-width:64ch; line-height:1.55;}
+  .formatnote{
+    background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px;
+    padding:12px 14px; margin-bottom:14px; font-size:12px; line-height:1.6;
   }
-  .subhead{font-size:13.5px; color:var(--text-faint); margin:0 0 16px; max-width:60ch; line-height:1.5;}
-
-  /* STATS BAR */
-  .stats{
-    display:flex; gap:18px; padding:10px 14px; margin-bottom:14px;
-    background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07);
-    border-radius:10px; font-family:'IBM Plex Mono',monospace; font-size:12px;
-    color:var(--text-dim); overflow-x:auto; white-space:nowrap;
-  }
-  .stat b{color:var(--brass-soft); font-size:14px;}
-
-  /* CHIPS */
-  .chiprow{
-    display:flex; gap:8px; overflow-x:auto; padding:2px 2px 14px;
-    scrollbar-width:none;
-  }
+  .formatnote b{color:var(--brass-soft);}
+  .formatnote .fmt{display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; padding:2px 7px; border-radius:5px; margin-right:4px;}
+  .fmt.bu{background:rgba(184,64,47,0.18); color:var(--crimson-soft);}
+  .fmt.cn{background:rgba(63,138,134,0.2); color:var(--teal-soft);}
+  .fmt.cd{background:rgba(201,154,63,0.2); color:var(--brass-soft);}
+  .stats{display:flex; gap:16px; padding:10px 14px; margin-bottom:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:10px; font-family:'IBM Plex Mono',monospace; font-size:12px; overflow-x:auto; white-space:nowrap;}
+  .stats b{color:var(--brass-soft); font-size:14px;}
+  .chiprow{display:flex; gap:8px; overflow-x:auto; padding:2px 2px 14px; scrollbar-width:none;}
   .chiprow::-webkit-scrollbar{display:none;}
-  .chip{
-    flex:0 0 auto; font-family:'IBM Plex Mono',monospace; font-size:11.5px;
-    letter-spacing:.03em; padding:7px 13px; border-radius:20px;
-    border:1px solid rgba(255,255,255,0.14); color:var(--text-dim);
-    background:rgba(255,255,255,0.02); cursor:pointer; user-select:none;
-    transition:all .15s ease; white-space:nowrap;
-  }
+  .chip{flex:0 0 auto; font-family:'IBM Plex Mono',monospace; font-size:11px; padding:7px 12px; border-radius:20px; border:1px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.02); cursor:pointer; white-space:nowrap; transition:.15s;}
   .chip:hover{border-color:var(--brass);}
   .chip.active{background:var(--brass); border-color:var(--brass); color:#1a1305; font-weight:600;}
-
   .toolbar{display:flex; gap:8px; padding:0 20px 4px; flex-wrap:wrap;}
-  .btn{
-    font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.04em;
-    padding:8px 14px; border-radius:8px; border:1px solid var(--crimson-soft);
-    background:rgba(184,64,47,0.12); color:var(--crimson-soft); cursor:pointer;
-  }
-  .btn.secondary{border-color:rgba(255,255,255,0.16); background:transparent; color:var(--text-dim);}
+  .btn{font-family:'IBM Plex Mono',monospace; font-size:11px; padding:8px 13px; border-radius:8px; border:1px solid rgba(255,255,255,0.16); background:transparent; color:var(--text-dim); cursor:pointer;}
   .btn:active{transform:scale(.97);}
-
   main{padding:8px 20px 0;}
-
-  .section-head{
-    display:flex; align-items:baseline; gap:10px; margin:34px 0 14px;
-  }
+  .section-head{display:flex; align-items:baseline; gap:10px; margin:32px 0 4px;}
   .section-head .idx{font-family:'IBM Plex Mono',monospace; color:var(--brass); font-size:13px;}
-  .section-head h2{
-    font-family:'Fraunces',serif; font-weight:600; font-size:22px; margin:0;
-    color:var(--parchment);
-  }
-  .section-head .count{
-    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-faint); margin-left:auto;
-  }
-  .section-line{height:1px; background:linear-gradient(90deg, rgba(201,154,63,0.5), transparent); margin-bottom:16px;}
-
+  .section-head h2{font-family:'Fraunces',serif; font-weight:600; font-size:21px; margin:0; color:var(--parchment);}
+  .section-line{height:1px; background:linear-gradient(90deg, rgba(201,154,63,0.5), transparent); margin:8px 0 16px;}
   .grid{display:grid; grid-template-columns:1fr; gap:14px;}
-  @media(min-width:640px){ .grid{grid-template-columns:1fr 1fr;} }
+  @media(min-width:680px){ .grid{grid-template-columns:1fr 1fr;} }
 
-  /* CARD */
-  .card{
-    perspective:1200px; height:auto; cursor:pointer;
-  }
-  .card-inner{
-    position:relative; min-height:168px; transform-style:preserve-3d;
-    transition:transform .55s cubic-bezier(.4,.2,.2,1);
-  }
-  .card.flipped .card-inner{transform:rotateY(180deg);}
-  .face{
-    position:absolute; inset:0; backface-visibility:hidden;
-    border-radius:10px; padding:18px 18px 16px;
-    display:flex; flex-direction:column;
-  }
-  .face.front{
-    background:var(--parchment); color:#26210f;
-    border:1px solid var(--parchment-dim);
-    box-shadow:0 3px 0 rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.25);
-  }
-  .face.back{
-    background:linear-gradient(160deg,#22304f,#182342);
-    color:var(--parchment);
-    transform:rotateY(180deg);
+  .card{border-radius:12px; overflow:hidden; background:var(--parchment); color:#26210f; box-shadow:0 3px 0 rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.25); display:flex; flex-direction:column;}
+  .card-top{padding:14px 16px 10px; display:flex; align-items:center; gap:8px; border-bottom:1px dashed rgba(0,0,0,0.12);}
+  .tag{font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.05em; padding:2px 7px; border-radius:5px; text-transform:uppercase;}
+  .tag.bu{background:rgba(184,64,47,0.14); color:#8a2f22;}
+  .tag.cn{background:rgba(63,138,134,0.16); color:#2b5f5c;}
+  .qidx{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#8a7a4a;}
+  .points{margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; color:#8a2f22; background:rgba(184,64,47,0.1); padding:3px 9px; border-radius:20px;}
+  .card-body{padding:14px 16px 16px; flex:1; display:flex; flex-direction:column;}
+  .clue-list{list-style:none; margin:0 0 10px; padding:0; display:flex; flex-direction:column; gap:8px;}
+  .clue-list li{font-size:13.5px; line-height:1.45; padding-left:16px; position:relative;}
+  .clue-list li::before{content:"—"; position:absolute; left:0; color:#a08843; font-weight:600;}
+  .connect-items{list-style:none; margin:0 0 10px; padding:0; display:flex; flex-direction:column; gap:6px;}
+  .connect-items li{font-size:13.5px; line-height:1.4; padding:6px 10px; background:rgba(0,0,0,0.045); border-radius:6px;}
+  .card-actions{display:flex; gap:8px; margin-top:auto; flex-wrap:wrap;}
+  .act{font-family:'IBM Plex Mono',monospace; font-size:11px; padding:7px 12px; border-radius:7px; border:1px solid rgba(0,0,0,0.18); background:rgba(255,255,255,0.5); color:#26210f; cursor:pointer;}
+  .act.primary{background:#26210f; color:var(--parchment); border-color:#26210f;}
+  .act.disabled{opacity:.35; pointer-events:none;}
+  .answer-box{
+    margin-top:10px; padding:12px 14px; border-radius:9px;
+    background:linear-gradient(160deg,#22304f,#182342); color:var(--parchment);
     border:1px solid rgba(201,154,63,0.35);
-    box-shadow:0 3px 0 rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.35);
   }
-  .qnum{
-    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.06em;
-    color:#8a7a4a; text-transform:uppercase; margin-bottom:8px;
-  }
-  .qtext{font-size:14.5px; line-height:1.48; font-weight:500; flex:1;}
-  .tapline{
-    font-family:'IBM Plex Mono',monospace; font-size:10px; color:#9c8a55;
-    margin-top:10px; letter-spacing:.05em;
-  }
-  .ans-label{
-    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em;
-    color:var(--brass-soft); text-transform:uppercase; margin-bottom:6px;
-  }
-  .ans-text{
-    font-family:'Fraunces',serif; font-weight:600; font-size:19px; margin-bottom:8px; color:#fff;
-  }
-  .funda{font-size:12.5px; line-height:1.5; color:#c9cbdc; flex:1;}
+  .ans-label{font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.08em; color:var(--brass-soft); text-transform:uppercase; margin-bottom:5px;}
+  .ans-text{font-family:'Fraunces',serif; font-weight:600; font-size:18px; margin-bottom:6px; color:#fff;}
+  .funda{font-size:12px; line-height:1.5; color:#c9cbdc;}
   .funda b{color:var(--brass-soft);}
-  .card-actions{display:flex; gap:8px; margin-top:10px;}
-  .mini-btn{
-    font-family:'IBM Plex Mono',monospace; font-size:10.5px; padding:5px 10px;
-    border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.04);
-    color:var(--text-dim); cursor:pointer;
-  }
-  .mini-btn.got{border-color:var(--ok); color:var(--ok);}
-  .mini-btn.got.active{background:var(--ok); color:#0f1a0f; font-weight:600;}
-  .mini-btn.miss{border-color:var(--crimson-soft); color:var(--crimson-soft);}
-  .mini-btn.miss.active{background:var(--crimson-soft); color:#2a0f0a; font-weight:600;}
-  .card.marked-got .face.front{box-shadow:0 3px 0 rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.25), 0 0 0 2px var(--ok) inset;}
-  .card.marked-miss .face.front{box-shadow:0 3px 0 rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.25), 0 0 0 2px var(--crimson-soft) inset;}
+  .scoreline{font-family:'IBM Plex Mono',monospace; font-size:11px; color:#8a7a4a; margin-top:8px;}
+  .mark-row{display:flex; gap:8px; margin-top:8px;}
+  .mini-btn{font-family:'IBM Plex Mono',monospace; font-size:10px; padding:5px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); color:var(--text-dim); cursor:pointer;}
+  .mini-btn.got.active{background:var(--ok); color:#0f1a0f; border-color:var(--ok); font-weight:600;}
+  .mini-btn.miss.active{background:var(--crimson-soft); color:#2a0f0a; border-color:var(--crimson-soft); font-weight:600;}
 
-  footer{
-    text-align:center; padding:30px 20px; font-family:'IBM Plex Mono',monospace;
-    font-size:11px; color:var(--text-faint);
-  }
-
-  ::selection{background:var(--brass); color:#1a1305;}
+  /* Clue-do section */
+  .cluedo-card{background:linear-gradient(160deg,#241a0f,#1a1308); border:1px solid rgba(201,154,63,0.3); border-radius:12px; padding:16px 18px; color:var(--parchment);}
+  .cluedo-riddle{font-family:'Fraunces',serif; font-style:italic; font-size:16px; line-height:1.5; margin-bottom:10px; color:var(--brass-soft);}
+  .cluedo-ans{font-size:13px;}
+  .cluedo-ans b{color:#fff;}
+  footer{text-align:center; padding:30px 20px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-faint);}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow"><span class="dot"></span>COLUMBAN OPEN QUIZ · PRACTICE DECK</div>
-    <h1>Fund&#257; Deck, Round One</h1>
-    <p class="subhead">13 priority categories, built as buildup-clue &rarr; answer flashcards. Tap a card to flip it. Mark what you knew cold and what needs a re-look &mdash; your marks are saved on this device.</p>
+    <div class="eyebrow"><span class="dot"></span>COLUMBAN OPEN QUIZ · PRACTICE DECK v2</div>
+    <h1>Build-Ups &amp; Connects</h1>
+    <p class="subhead">Rebuilt in the actual COQ format: layered "Direct Orals" build-up clues (buzz early for more points) and "Connect" questions where you find the hidden link across unrelated-looking clues. Plus a Clue-do bonus round.</p>
+    <div class="formatnote">
+      <span class="fmt bu">BUILD-UP</span> starts with the most obscure clue (worth the most) and gets easier &mdash; exactly like COQ's Direct Orals round. Real quizzing skill is buzzing on clue 1, not waiting for the giveaway.<br><br>
+      <span class="fmt cn">CONNECT</span> gives you several items that look unrelated. Find what actually links them &mdash; COQ runs whole rounds of these, often with pictures instead of text.<br><br>
+      <span class="fmt cd">CLUE-DO</span> (bonus, bottom of page) is COQ's cryptic wordplay round &mdash; one compressed riddle, one answer, no build-up.
+    </div>
     <div class="stats" id="statsBar"></div>
     <div class="chiprow" id="chipRow"></div>
     <div class="toolbar">
-      <button class="btn" id="shuffleBtn">&#8635; Shuffle order</button>
-      <button class="btn secondary" id="resetBtn">Reset marks</button>
-      <button class="btn secondary" id="flipAllBtn">Flip all</button>
+      <button class="btn" id="resetBtn">Reset marks &amp; score</button>
     </div>
   </header>
   <main id="main"></main>
-  <footer>13 of 26 categories included &mdash; ask for the rest (Art, Geography, Mythology, Indian Literature, F1, Man Utd &amp; PL, and more) any time.</footer>
 </div>
 
 <script>
 const DATA = [
+
 {cat:"Columban Literature", items:[
- {q:"This 1949 dystopia gave English the terms Big Brother, doublethink, and Room 101, set in a superstate called Oceania.", a:"1984", f:"<b>Orwell</b> wrote much of it while dying of tuberculosis on the remote Scottish isle of Jura."},
- {q:"In this Orwell allegory, the pigs Napoleon and Snowball stand in for Stalin and Trotsky, and the ending sees pigs and humans become indistinguishable.", a:"Animal Farm", f:"The farm itself, Manor Farm, is renamed 'Animal Farm' after the revolt &mdash; only to be renamed back at the very end."},
- {q:"Huxley's dystopia imagines a 'World State' where humans are hatched in bottles, sorted into castes, and kept docile with a drug called soma.", a:"Brave New World", f:"Huxley wrote it partly as a reply to H.G. Wells' utopian optimism &mdash; he thought comfort, not cruelty, would be how freedom died."},
- {q:"Bradbury's novel is named for the temperature at which book paper is said to catch fire, in a future where firemen burn books instead of putting out fires.", a:"Fahrenheit 451", f:"Bradbury reportedly wrote the first draft on rented typewriters in a library basement, paying by the hour &mdash; fitting, for a book about books."},
- {q:"Kafka's unfinished novel follows Josef K., arrested and prosecuted by an inaccessible, faceless court for a crime never named to him or the reader.", a:"The Trial", f:"Kafka never finished it and asked his friend Max Brod to burn all his manuscripts after his death &mdash; Brod published them instead."},
- {q:"In this Dostoevsky novel, the impoverished student Raskolnikov murders a pawnbroker to test his theory that certain 'extraordinary' men are above conventional morality.", a:"Crime and Punishment", f:"The novel is set in St. Petersburg's slums, which Dostoevsky knew firsthand &mdash; he'd himself faced a mock execution before a Tsarist reprieve."},
- {q:"Garc&iacute;a M&aacute;rquez's magical-realist saga follows seven generations of the Buend&iacute;a family in the fictional town of Macondo.", a:"One Hundred Years of Solitude", f:"The book is often credited with bringing 'magical realism' to a global readership; Garc&iacute;a M&aacute;rquez won the Nobel Prize in Literature in 1982."},
- {q:"Joyce's novel compresses Homer's Odyssey into a single day &mdash; June 16 &mdash; followed by Leopold Bloom around Dublin, a date now celebrated annually by fans.", a:"Ulysses", f:"That annual celebration is called 'Bloomsday.' The book was banned in the US and UK for over a decade for obscenity."}
+ {type:"bu", clues:[
+   "Its author worked at the BBC during WWII producing propaganda broadcasts &mdash; an experience some say shaped his depiction of a lumbering, euphemism-loving state machine.",
+   "In the regime it depicts, the ministries are named for the exact opposite of what they do &mdash; the one in charge of propaganda is called the Ministry of Truth.",
+   "It gave English two now-everyday phrases for state surveillance and reality-denial."
+  ], a:"1984 (George Orwell)", f:"Orwell died just seven months after publication, never seeing how deeply 'Big Brother' and 'doublethink' would enter everyday English."},
+ {type:"bu", clues:[
+   "Its narrator is executed for two things: not crying at his mother's funeral, and killing a man he barely knew, on a blindingly sunlit beach.",
+   "Its author was a goalkeeper in his youth and later said football taught him more about morality than anything else.",
+   "It's considered the defining novel of a philosophy its author insisted was distinct from his friend-turned-rival Sartre's existentialism."
+  ], a:"The Stranger (Albert Camus)", f:"Camus called his own philosophy 'absurdism' specifically to separate it from Sartre's existentialism &mdash; a distinction that outlived their famous public falling-out."},
+ {type:"bu", clues:[
+   "Its protagonist murders an elderly pawnbroker to test whether he's an 'extraordinary man' exempt from ordinary morality &mdash; then can't live with what he's done.",
+   "Its author was once sentenced to death by firing squad and reprieved at the very last moment, an experience that haunted his fiction ever after.",
+   "It's set in the slums of St. Petersburg, a city its author knew firsthand."
+  ], a:"Crime and Punishment (Fyodor Dostoevsky)", f:"The mock execution happened in 1849 over a political reading circle; the reprieve arrived only after the men were already lined up before the firing squad."},
+ {type:"bu", clues:[
+   "Its central family lives in a town whose founding is remembered, from the novel's very first line, alongside a firing squad the patriarch will one day face.",
+   "Its author said the entire trick of his style came from his grandmother, who told him outlandish stories in a completely deadpan tone.",
+   "The genre it's credited with popularizing blends the mundane and the miraculous without ever flagging which is which."
+  ], a:"One Hundred Years of Solitude (Gabriel Garc\u00eda M\u00e1rquez)", f:"That genre is magical realism. Garc\u00eda M\u00e1rquez won the 1982 Nobel Prize in Literature, largely on the strength of this one novel."},
+ {type:"cn", prompt:["Miguel de Cervantes","William Shakespeare","Inca chronicler Garcilaso de la Vega","UNESCO's World Book and Copyright Day"],
+   a:"23 April, 1616 — the date (give or take a calendar quirk) traditionally given for all three writers' deaths, which is why UNESCO chose that date for World Book Day.",
+   f:"Because Spain had already switched to the Gregorian calendar while England was still on the Julian one, Cervantes and Shakespeare didn't die on the same day in absolute terms &mdash; but the coincidence stuck in quiz lore anyway."},
+ {type:"cn", prompt:["A word derived from an author's surname","A nightmarishly illogical bureaucracy","A deathbed request to burn all unpublished work","A friend named Max Brod who didn't listen"],
+   a:"Kafka / 'Kafkaesque' (Franz Kafka)",
+   f:"Brod ignored Kafka's instructions and published his unfinished novels, including The Trial &mdash; without which we wouldn't have most of what 'Kafkaesque' now describes."}
 ]},
 
 {cat:"Films", items:[
- {q:"Orson Welles' directorial debut, frequently topping 'greatest films ever' lists, centers on a dying press baron whose final word is a mystery.", a:"Citizen Kane", f:"That word, 'Rosebud,' turns out to name a childhood sled &mdash; a symbol of the one thing money couldn't buy back."},
- {q:"Kurosawa's film recounts a single crime through four wildly contradictory eyewitness accounts, lending its name to a now-common storytelling term.", a:"Rashomon", f:"'The Rashomon effect' is now used across law, journalism and psychology for conflicting accounts of the same event."},
- {q:"This Wachowski-directed film introduced 'red pill vs. blue pill' into everyday pop-culture vocabulary.", a:"The Matrix", f:"The film borrowed heavily from Baudrillard's philosophy text 'Simulacra and Simulation' &mdash; which briefly appears on-screen as a hollowed-out book."},
- {q:"Bong Joon-ho's film about the Kim family infiltrating the wealthy Park household became the first non-English-language film to win Best Picture.", a:"Parasite", f:"It won that Oscar in 2020, the same night Bong also won Best Director and Best Original Screenplay."},
- {q:"In this Nolan heist film, teams enter shared dreams to plant an idea, and the ending famously leaves a spinning top's fate ambiguous.", a:"Inception", f:"Nolan has said the ending is intentionally unresolved &mdash; the point is that Cobb no longer cares whether it's real."},
- {q:"Coppola's Vietnam War epic loosely reimagines Joseph Conrad's 'Heart of Darkness,' following a mission to 'terminate with extreme prejudice' a renegade colonel.", a:"Apocalypse Now", f:"Its production was so famously chaotic (typhoons, a heart attack, Brando arriving overweight and unprepared) that it inspired its own documentary, 'Hearts of Darkness.'"},
- {q:"Villeneuve's sequel to a 1982 Ridley Scott sci-fi noir continues to ask what separates humans from artificial replicants.", a:"Blade Runner 2049", f:"The original 1982 film was itself based on Philip K. Dick's novel 'Do Androids Dream of Electric Sheep?'"},
- {q:"Tarantino's nonlinear crime film is structured as interlocking stories told out of chronological order, reviving John Travolta's career.", a:"Pulp Fiction", f:"It won the Palme d'Or at Cannes in 1994 and is credited with popularizing non-linear, chapter-based screenwriting in mainstream cinema."}
+ {type:"bu", clues:[
+   "Its production was so chaotic &mdash; a typhoon destroyed the sets, the lead actor had a heart attack mid-shoot, and Marlon Brando arrived overweight and unprepared &mdash; that it later got its own making-of documentary.",
+   "It reimagines a Joseph Conrad novella, transplanting a journey up an African river to the Vietnam War.",
+   "Its most quoted scene involves a colonel who loves the smell of a particular battlefield chemical in the morning."
+  ], a:"Apocalypse Now (Francis Ford Coppola)", f:"That documentary is 'Hearts of Darkness: A Filmmaker's Apocalypse,' assembled decades later from footage shot by Coppola's own wife, Eleanor."},
+ {type:"bu", clues:[
+   "Its nonlinear structure bounces between three story threads out of chronological order, inspired partly by pulp crime magazines.",
+   "It revived the career of an actor best known until then for disco dancing on-screen decades earlier.",
+   "It won the Palme d'Or at Cannes in 1994 and features an iconic dance contest at a 1950s-themed diner."
+  ], a:"Pulp Fiction (Quentin Tarantino)", f:"That actor was John Travolta, whose career had cooled since 'Saturday Night Fever' before this role reignited it entirely."},
+ {type:"bu", clues:[
+   "A single crime is retold through four irreconcilable eyewitness accounts, none of them fully trustworthy.",
+   "Its director said he made it because he was troubled by how people can't even be honest about themselves, let alone events.",
+   "Its title has since lent its name to any situation with wildly conflicting versions of the same story."
+  ], a:"Rashomon (Akira Kurosawa)", f:"'The Rashomon effect' is now standard vocabulary in law, journalism, and psychology &mdash; a rare case of a film title becoming an analytic term."},
+ {type:"bu", clues:[
+   "Its first non-English-language Best Picture winner is a dark comedy about a poor family infiltrating a wealthy household, job by job.",
+   "A real semi-basement apartment and a meticulously designed multi-level house defined its class-conscious sets.",
+   "Its Korean director swept four major Oscars the same night, including Best Director."
+  ], a:"Parasite (Bong Joon-ho)", f:"It won in 2020, the first non-English-language film ever to take Best Picture in the Academy's 92-year history."},
+ {type:"cn", prompt:["A 1982 Ridley Scott sci-fi noir","Replicants who don't know they're artificial","A novel about androids dreaming of electric sheep","A 2017 sequel directed by Denis Villeneuve"],
+   a:"Blade Runner (and Blade Runner 2049)",
+   f:"The source novel was Philip K. Dick's 'Do Androids Dream of Electric Sheep?' — Dick died just months before the original film's release."},
+ {type:"cn", prompt:["A 1999 film about simulated reality","'Red pill or blue pill'","A hollowed-out prop book by Jean Baudrillard","A philosopher who later said the film misunderstood his work"],
+   a:"The Matrix",
+   f:"The prop book was Baudrillard's 'Simulacra and Simulation.' Baudrillard himself was reportedly unimpressed, feeling the Wachowskis had flattened his ideas into an action-movie premise."}
 ]},
 
 {cat:"History", items:[
- {q:"This trilingual stele, discovered by French soldiers in Egypt in 1799, gave scholars the key to finally decoding hieroglyphs.", a:"Rosetta Stone", f:"The same decree appears in Greek, Demotic, and hieroglyphic script &mdash; Jean-Fran&ccedil;ois Champollion cracked it in 1822 using the Greek as a key."},
- {q:"This 1215 charter, forced on King John of England by rebel barons, established for the first time that even the monarch is subject to the law.", a:"Magna Carta", f:"Most of its original clauses (about feudal fishing weirs and forest rights) are now obsolete &mdash; only a handful, including due process, still matter legally."},
- {q:"Erected almost overnight in 1961 and torn down amid celebration in 1989, this structure physically divided a European city for 28 years.", a:"Berlin Wall", f:"Its fall wasn't planned for that night &mdash; an East German spokesman misspoke at a press conference, and guards, confused, simply opened the gates."},
- {q:"Codename for the secret US programme that built the atomic bomb during WWII, its scientific side was led by J. Robert Oppenheimer at Los Alamos.", a:"Manhattan Project", f:"It employed over 130,000 people at its peak, most of whom had no idea what they were actually building."},
- {q:"This 13-day 1962 standoff, sparked by Soviet missiles placed in Cuba, is widely considered the closest the Cold War came to turning nuclear.", a:"Cuban Missile Crisis", f:"It was resolved partly through a secret, unpublicized deal: the US quietly agreed to remove its own missiles from Turkey."},
- {q:"In 1930, Gandhi walked roughly 240 miles from Sabarmati to the coastal town of Dandi to defy a British colonial tax on a basic commodity.", a:"Salt March", f:"The tax was on salt itself &mdash; Gandhi picked it deliberately because it touched every Indian household, rich or poor."},
- {q:"This 1929 crash on a single American exchange triggered a decade-long global economic collapse known as the Great Depression.", a:"Wall Street Crash of 1929", f:"'Black Tuesday,' October 29, saw a then-record 16 million shares traded in a single panicked session."},
- {q:"On July 20, 1969, two astronauts became the first humans to walk on a surface beyond Earth, while a third orbited alone above them.", a:"Moon landing (Apollo 11)", f:"That third astronaut, Michael Collins, orbiting solo, has said he never felt lonely &mdash; just aware he was the only human who couldn't see both his crewmates and Earth at once."}
+ {type:"bu", clues:[
+   "Discovered by French soldiers under Napoleon in Egypt, it carries a single royal decree inscribed three times, in three different scripts.",
+   "After Napoleon's defeat, a British-French tug-of-war over the object followed &mdash; it ended up in the British Museum.",
+   "A French scholar cracked its middle script by comparing it against the Greek text running alongside it."
+  ], a:"Rosetta Stone", f:"That scholar, Jean-Fran\u00e7ois Champollion, became the first person in over a thousand years to actually read hieroglyphs."},
+ {type:"bu", clues:[
+   "It was built almost overnight in August 1961 to stop a mass exodus from one side of a European capital to the other.",
+   "Its fall wasn't planned for the night it happened &mdash; an East German spokesman fumbled a press-conference answer about new travel rules.",
+   "Confused border guards, facing a growing crowd and no clear orders, simply opened the gates."
+  ], a:"Berlin Wall", f:"The spokesman, G\u00fcnter Schabowski, had been handed the note about new rules moments before the press conference and hadn't been briefed on when they were meant to take effect."},
+ {type:"bu", clues:[
+   "This 13-day standoff began after American spy planes photographed missile sites under construction 90 miles from Florida.",
+   "It ended with a public deal &mdash; missiles removed from one country &mdash; and a secret one &mdash; American missiles quietly withdrawn from another.",
+   "It's widely considered the closest the Cold War ever came to going nuclear."
+  ], a:"Cuban Missile Crisis (1962)", f:"The secret half of the deal, removing US Jupiter missiles from Turkey, wasn't publicly confirmed for decades."},
+ {type:"bu", clues:[
+   "This 1930 protest march covered roughly 240 miles on foot over 24 days.",
+   "Its target was a colonial tax on a household essential, chosen deliberately so the protest couldn't be dismissed as elitist.",
+   "It ended at a coastal town where the marchers illegally made the taxed commodity themselves."
+  ], a:"Salt March / Dandi March (Mahatma Gandhi)", f:"Gandhi picked salt specifically because every Indian household, rich or poor, used it &mdash; making the tax a genuinely universal grievance."},
+ {type:"cn", prompt:["A secret telegram intercepted by British intelligence","An ocean liner sunk off the Irish coast","Unrestricted submarine warfare","American public opinion shifting in 1917"],
+   a:"Events that drew the United States into World War I",
+   f:"The telegram was the Zimmermann Telegram, proposing a German-Mexican alliance; the liner was the Lusitania, sunk in 1915."},
+ {type:"cn", prompt:["The Battle of Britain","Operation Barbarossa","The Normandy landings","Atomic bombings of two Japanese cities"],
+   a:"World War II",
+   f:"Operation Barbarossa, the German invasion of the USSR, remains the largest military invasion in history by manpower involved."}
 ]},
 
 {cat:"Science", items:[
- {q:"This gene-editing tool, adapted from a bacterial immune defence system, won its discoverers the 2020 Nobel Prize in Chemistry.", a:"CRISPR", f:"It lets scientists cut and edit DNA at precise locations &mdash; the 2020 Nobel went to Jennifer Doudna and Emmanuelle Charpentier, the first all-woman science Nobel pairing."},
- {q:"This thought experiment imagines a cat in a sealed box that is, according to quantum rules, simultaneously alive and dead until someone looks.", a:"Schr&ouml;dinger's cat", f:"Schr&ouml;dinger devised it not to explain quantum mechanics but to mock it &mdash; he thought the idea of a literally half-dead cat exposed how absurd the theory sounded when scaled up."},
- {q:"Turing proposed this test for machine intelligence: if a human judge can't reliably tell a machine's text responses from a person's, the machine passes.", a:"Turing test", f:"Turing originally called it 'the imitation game' in his 1950 paper &mdash; the same phrase later used as the title of the 2014 biopic about him."},
- {q:"Launched in 2021 as Hubble's successor, this space telescope observes mostly in infrared to peer through cosmic dust to the universe's earliest galaxies.", a:"James Webb Space Telescope", f:"It sits about 1.5 million km from Earth, at a gravitationally stable point called L2 &mdash; far too distant for any repair mission like Hubble's."},
- {q:"Discovered almost by accident in 1928 when a stray mould contaminated a lab dish, this became the world's first mass-produced antibiotic.", a:"Penicillin", f:"Alexander Fleming initially struggled to get anyone interested; it took a decade and a separate Oxford team (Florey and Chain) to turn it into a usable drug."},
- {q:"Einstein's theory, split into a 1905 'special' version and a 1915 'general' one, redefined gravity as the curvature of space and time itself.", a:"Theory of relativity", f:"General relativity predicted gravitational waves nearly a century before LIGO directly detected them in 2015."},
- {q:"The double-helix structure of this molecule was published by Watson and Crick in 1953, built substantially on unpublished X-ray data from a colleague who received no Nobel recognition in her lifetime.", a:"DNA", f:"That colleague was Rosalind Franklin, who died in 1958; Nobel Prizes are never awarded posthumously, which some argue cost her the credit."},
- {q:"This underground physics facility straddling the France-Switzerland border confirmed the existence of the Higgs boson in 2012.", a:"Large Hadron Collider (CERN)", f:"At 27 km in circumference, it's the world's largest and most powerful particle accelerator, smashing protons at near light-speed."}
+ {type:"bu", clues:[
+   "This thought experiment was devised specifically to mock a theory, not to endorse it &mdash; its creator thought the idea was absurd once scaled up to everyday objects.",
+   "It involves a sealed box, a vial of poison, a radioactive trigger, and one very unlucky feline.",
+   "Until observed, quantum rules say the animal inside is simultaneously alive and dead."
+  ], a:"Schr\u00f6dinger's cat", f:"Erwin Schr\u00f6dinger intended it as a criticism of the Copenhagen interpretation of quantum mechanics &mdash; a jab, not a mascot."},
+ {type:"bu", clues:[
+   "Its key structural clue came from unpublished X-ray diffraction images, taken by a scientist who received no Nobel recognition before her death.",
+   "Two other scientists published the now-famous double-helix model in a single one-page paper in 1953.",
+   "It's often called the molecule of life."
+  ], a:"DNA", f:"That uncredited scientist was Rosalind Franklin. Nobel Prizes are never awarded posthumously &mdash; a rule often cited as the reason her contribution went unrecognised in 1962."},
+ {type:"bu", clues:[
+   "Confirmed in 2012 at an underground facility straddling two countries, this particle explains why other particles have mass at all.",
+   "It's popularly nicknamed after a certain deity in a science book title, a nickname its own namesake physicist reportedly disliked.",
+   "Nearly 50 years passed between its theoretical prediction and its experimental confirmation."
+  ], a:"Higgs boson", f:"Physicist Peter Higgs reportedly felt the 'God particle' nickname overstated and misrepresented the physics involved."},
+ {type:"bu", clues:[
+   "Discovered accidentally in 1928 when a stray mould contaminated a petri dish left out over a holiday.",
+   "Its discoverer struggled for a decade to get anyone to take it seriously as an actual usable drug.",
+   "A separate Oxford team later turned it into the world's first mass-produced antibiotic, in time for WWII battlefield use."
+  ], a:"Penicillin (Alexander Fleming; Florey &amp; Chain)", f:"Fleming himself later said, 'I did not invent penicillin. Nature did that. I only discovered it by accident' &mdash; the hard work of mass production was someone else's decade later."},
+ {type:"cn", prompt:["A 1919 solar eclipse expedition","A remote African island","A Swiss patent clerk's 1905 paper","Starlight bending around the sun"],
+   a:"Confirmation of Einstein's theory of general relativity (Arthur Eddington's 1919 eclipse observations)",
+   f:"Eddington's expedition to the island of Pr\u00edncipe made Einstein a global celebrity almost overnight."},
+ {type:"cn", prompt:["A bacterial immune system","A gene-editing tool","The first all-woman pairing to win a science Nobel","2020's Chemistry Prize"],
+   a:"CRISPR (Jennifer Doudna and Emmanuelle Charpentier)",
+   f:"The system was adapted from how bacteria remember and defend against viral DNA &mdash; a defence mechanism repurposed into a precision editing tool."}
 ]},
 
 {cat:"World Affairs", items:[
- {q:"This 1978 US-brokered accord between Egypt's Anwar Sadat and Israel's Menachem Begin led to a lasting peace treaty the following year.", a:"Camp David Accords", f:"Both leaders shared the 1978 Nobel Peace Prize; Sadat was later assassinated by militants opposed to the treaty."},
- {q:"This Israeli missile defence system is designed to intercept short-range rockets before they reach populated areas.", a:"Iron Dome", f:"It calculates a rocket's likely landing spot in seconds and only fires if that spot is populated &mdash; letting rockets headed for open fields simply fall."},
- {q:"This grouping originally comprising Brazil, Russia, India, China and South Africa has since expanded to include several more nations.", a:"BRICS", f:"The acronym was originally coined by a Goldman Sachs economist in 2001 as an investment term, before the countries themselves adopted it as a political grouping."},
- {q:"Formed in 1949 principally to counter Soviet expansion in postwar Europe, this military alliance now includes over 30 member states.", a:"NATO", f:"Its founding principle, Article 5, treats an attack on one member as an attack on all &mdash; invoked for the first and only time after 9/11, in defence of the US."},
- {q:"In a 2020 referendum-driven process, the United Kingdom formally exited this European political and economic union.", a:"Brexit (European Union)", f:"The 2016 referendum passed by a narrow 52-48 margin; the actual legal exit didn't complete until January 2020."},
- {q:"This Chinese-led global infrastructure and investment strategy, launched in 2013, has been compared to a modern revival of the ancient Silk Road.", a:"Belt and Road Initiative", f:"It spans ports, railways and pipelines across dozens of countries, and is sometimes described by critics as 'debt-trap diplomacy.'"},
- {q:"Headquartered in New York, this body's Security Council holds five permanent members each wielding an absolute veto.", a:"United Nations", f:"Those five permanent members &mdash; the US, UK, France, Russia, and China &mdash; are essentially the victorious powers of World War II."}
+ {type:"bu", clues:[
+   "Brokered by a US President at a rural Maryland retreat in 1978, it led to a formal peace treaty the following year.",
+   "One of its two signatories was assassinated two years later by militants opposed to the very treaty he'd signed.",
+   "Both leaders shared a Nobel Peace Prize the year of the accord."
+  ], a:"Camp David Accords (Sadat and Begin)", f:"The retreat was Camp David itself, the US President's official country residence, which lent the accords their name."},
+ {type:"bu", clues:[
+   "Originally coined in 2001 by a Goldman Sachs economist purely as an investment-grouping term.",
+   "The countries it named eventually adopted the term themselves and turned it into an actual political-economic bloc.",
+   "It began with four nations, added a fifth in 2010, and has since expanded further still."
+  ], a:"BRICS", f:"The original four were Brazil, Russia, India and China; South Africa joined in 2010, and a further expansion in 2024 added several more nations."},
+ {type:"bu", clues:[
+   "This 2020 departure followed a referendum won by a margin of under four percentage points.",
+   "The actual legal exit took over three years to complete after the vote.",
+   "It ended a European membership that had begun in 1973."
+  ], a:"Brexit (UK's exit from the European Union)", f:"The formal withdrawal agreement only took effect on 31 January 2020 &mdash; more than three and a half years after the June 2016 referendum."},
+ {type:"bu", clues:[
+   "Its five permanent members can each unilaterally block any resolution, regardless of how everyone else votes.",
+   "All five happen to be the victorious major powers of World War II.",
+   "It sits within a New York-headquartered body founded in 1945 to prevent another world war."
+  ], a:"United Nations Security Council", f:"That veto power (the US, UK, France, Russia, China) has meant the Council has been unable to act on several major crises where a permanent member itself was a party."},
+ {type:"cn", prompt:["A 1944 conference at a New Hampshire resort","The IMF","The World Bank","Fixed exchange rates pegged to the US dollar"],
+   a:"The Bretton Woods system",
+   f:"The conference took place at the Mount Washington Hotel in Bretton Woods, New Hampshire &mdash; both institutions it created still exist today, though the fixed-exchange-rate system collapsed in the 1970s."},
+ {type:"cn", prompt:["Taiwan","Crimea","The Korean peninsula","Unresolved 20th-century political divisions"],
+   a:"Territories still divided or disputed along fault lines drawn during Cold War-era or post-imperial conflicts",
+   f:"Each traces its current dispute to a different mid-20th-century split &mdash; a civil war, an annexation, and an armistice that never became a formal peace treaty."}
 ]},
 
 {cat:"Sports", items:[
- {q:"In the 1986 World Cup quarter-final, this goal was scored with a fist rather than a head, though the referee didn't spot it.", a:"Hand of God (goal)", f:"Maradona scored a second goal minutes later, dribbling past five England players, often called the 'Goal of the Century' &mdash; same match, same player."},
- {q:"This famed youth academy at Barcelona's training ground has produced players like Messi, Xavi and Iniesta.", a:"La Masia", f:"The name literally means 'the farmhouse' in Catalan &mdash; it was originally a real farmhouse before becoming the club's residential academy."},
- {q:"In 1985, a wall collapse during crowd violence before a Liverpool-Juventus European Cup Final in Belgium killed 39 people and led to a five-year ban on English clubs in Europe.", a:"Heysel Stadium disaster", f:"Liverpool would go on to be involved in another fatal stadium disaster four years later, at Hillsborough, this time as victims of a crowd-crush rather than violence."},
- {q:"This 1958 air crash in Germany killed several of Manchester United's young 'Busby Babes' squad, including three future England internationals.", a:"Munich air disaster", f:"Manager Matt Busby himself survived, despite being read the last rites twice, and rebuilt the club within a decade to European champions."},
- {q:"This Netflix docuseries followed Michael Jordan's Chicago Bulls through their final championship season, drawing on previously unseen behind-the-scenes footage.", a:"The Last Dance", f:"The footage had been filmed in 1997-98 by a crew given unprecedented access, then sat unused for over 20 years before Jordan agreed to its release."},
- {q:"This controversial 1932-33 England bowling tactic aimed at the batsman's body, largely to neutralise Don Bradman, nearly caused a diplomatic rift with Australia.", a:"Bodyline", f:"It worked &mdash; Bradman's average that series dropped to 56.57, still remarkable, but far below his career average of 99.94."},
- {q:"This statistical formula recalculates revised targets in limited-overs cricket matches interrupted by rain.", a:"Duckworth-Lewis-Stern method", f:"It was first used in international cricket in 1997 and updated with statistician Steven Stern's refinements in 2014, adding his name to the original Duckworth-Lewis method."}
+ {type:"bu", clues:[
+   "In a single 1986 World Cup quarter-final, this player scored a goal using a body part not permitted to touch the ball &mdash; the referee missed it entirely.",
+   "Minutes later, the same player scored again, dribbling past five England players in one of football's most replayed solo goals.",
+   "He later described the first goal, only half-jokingly, as partly divine intervention."
+  ], a:"Diego Maradona ('Hand of God' goal)", f:"The same match produced both the 'Hand of God' goal and the 'Goal of the Century' &mdash; arguably the most famous four minutes in football history."},
+ {type:"bu", clues:[
+   "A wall collapse amid crowd violence before this 1985 European Cup Final in Belgium killed 39 fans, most of them Italian.",
+   "It led to a five-year ban on all English clubs from European competitions.",
+   "The match, remarkably, still kicked off and was played to completion despite the deaths."
+  ], a:"Heysel Stadium disaster", f:"The ban was lifted in 1990 for all English clubs except Liverpool, whose fans were most directly implicated, who returned a year later."},
+ {type:"bu", clues:[
+   "This English bowling tactic in the 1932-33 Ashes deliberately targeted the batsman's body with fast, short-pitched deliveries.",
+   "It was designed specifically to blunt one Australian batsman whose career Test average sits at 99.94.",
+   "It nearly caused a full diplomatic incident between England and Australia."
+  ], a:"Bodyline (targeting Don Bradman)", f:"Bradman's average in that series dropped to 56.57 &mdash; still excellent by ordinary standards, but far below his career mark."},
+ {type:"bu", clues:[
+   "This Barcelona academy takes its name from the Catalan word for 'farmhouse,' which the building literally once was.",
+   "It has produced Messi, Xavi and Iniesta, among many others.",
+   "Its philosophy drills small-sided possession football into players from a very young age."
+  ], a:"La Masia", f:"The original farmhouse building still stands on the club's grounds, though the academy has since expanded well beyond it."},
+ {type:"cn", prompt:["A rain-interrupted limited-overs match","A revised run target","A statistician named Steven added to an existing formula in 2014","Two original creators named Duckworth and Lewis"],
+   a:"Duckworth-Lewis-Stern method",
+   f:"It was first used internationally in 1997; Steven Stern's refinements were incorporated and credited in the name from 2014 onward."},
+ {type:"cn", prompt:["A 1958 air disaster in Germany","Manchester United's 'Busby Babes'","A manager read the last rites twice","Rebuilding a title-winning squad within a decade"],
+   a:"Munich air disaster (and Matt Busby)",
+   f:"Busby survived despite catastrophic injuries and went on to rebuild United into European champions by 1968, a decade after the crash."}
 ]},
 
 {cat:"Business & Economics", items:[
- {q:"Warren Buffett transformed this Omaha-based company, originally a failing New England textile manufacturer, into a vast holding conglomerate.", a:"Berkshire Hathaway", f:"Buffett has called buying the original textile company itself one of his biggest investment mistakes, despite the empire built around it."},
- {q:"This Taiwanese company fabricates advanced chips for Apple and Nvidia, making it the world's dominant contract chipmaker.", a:"TSMC", f:"Its near-monopoly on cutting-edge chip fabrication has made Taiwan's geopolitical status a matter of global economic anxiety, not just a regional one."},
- {q:"The identity of this pseudonymous creator of Bitcoin, who vanished from public view around 2011, remains officially unconfirmed.", a:"Satoshi Nakamoto", f:"Whoever it is (or they are) reportedly holds roughly a million untouched early bitcoins, worth tens of billions of dollars at current prices."},
- {q:"The 2008 bankruptcy of this 158-year-old investment bank became the emblematic moment of the global financial crisis.", a:"Lehman Brothers", f:"At the time it was the largest bankruptcy filing in US history, with over $600 billion in assets."},
- {q:"This region south of San Francisco became the nucleus of the US tech industry, named for the material used in the semiconductors first made there.", a:"Silicon Valley", f:"It was popularized as a term by a journalist in 1971, referencing the silicon used in the chips of companies like Fairchild Semiconductor and Intel."},
- {q:"This finance term describes a privately held startup valued at over one billion dollars.", a:"Unicorn (finance)", f:"It was coined in 2013 by venture capitalist Aileen Lee, who chose the word specifically because such companies were, at the time, statistically rare."},
- {q:"Elon Musk's electric vehicle company takes its name from the 19th-century inventor of the AC induction motor.", a:"Tesla, Inc.", f:"Musk wasn't actually a founding employee &mdash; the company was founded by Martin Eberhard and Marc Tarpenning; Musk joined shortly after as an early investor."}
+ {type:"bu", clues:[
+   "Its pseudonymous creator vanished from public view around 2011 and has never been conclusively identified.",
+   "This person, or group, is estimated to hold roughly a million untouched units of the currency they created.",
+   "The founding whitepaper was published in 2008, amid the global financial crisis."
+  ], a:"Bitcoin (Satoshi Nakamoto)", f:"At various points, those untouched coins alone would have been worth tens of billions of dollars &mdash; making Nakamoto, whoever they are, potentially one of the richest people alive, on paper."},
+ {type:"bu", clues:[
+   "This holding company began life as a failing New England textile manufacturer.",
+   "Its chairman has called the original acquisition itself one of his biggest investment mistakes, despite the empire eventually built under its name.",
+   "It's now among the largest companies in the world by market value."
+  ], a:"Berkshire Hathaway (Warren Buffett)", f:"Buffett has said if he'd simply put the same money directly into insurance businesses from the start, skipping the textile mill entirely, he'd be far wealthier today."},
+ {type:"bu", clues:[
+   "This 2008 bankruptcy remains the largest corporate bankruptcy filing in US history.",
+   "Its collapse over a single weekend is often cited as the moment the global financial crisis became undeniable.",
+   "Its name belonged to a 158-year-old investment bank."
+  ], a:"Lehman Brothers", f:"It had over $600 billion in assets at the time of its collapse &mdash; roughly double the next-largest bankruptcy in US history."},
+ {type:"bu", clues:[
+   "This term was coined in 2013 by a venture capitalist specifically because the thing it described was, at the time, statistically rare.",
+   "It describes any privately-held startup valued above one billion dollars.",
+   "India now has dozens of these, including Flipkart and Zomato in their earlier private days."
+  ], a:"Unicorn (finance)", f:"Coined by VC Aileen Lee, the term has since become almost the opposite of rare &mdash; there are now well over a thousand globally."},
+ {type:"cn", prompt:["A region south of San Francisco","A material used in semiconductors","Fairchild Semiconductor","A 1971 magazine article that popularized the nickname"],
+   a:"Silicon Valley",
+   f:"The name was popularized by journalist Don Hoefler in a 1971 trade-publication series, referencing the silicon at the heart of the region's chip industry."},
+ {type:"cn", prompt:["Ratan Tata","Jaguar Land Rover","Corus Steel","India's oldest business conglomerate going fully global"],
+   a:"Tata Group's major international acquisitions under Ratan Tata",
+   f:"Both acquisitions came in the mid-2000s and were, at the time, among the largest overseas takeovers ever made by an Indian company."}
 ]},
 
 {cat:"Technology", items:[
- {q:"This observation holds that the number of transistors on a chip roughly doubles every two years, made by an Intel co-founder in 1965.", a:"Moore's Law", f:"Gordon Moore's original paper only projected the trend a decade forward &mdash; it has instead held, roughly, for over 50 years."},
- {q:"This CERN researcher invented the World Wide Web in 1989 as a way for scientists to share documents across different computers.", a:"Tim Berners-Lee (World Wide Web)", f:"He deliberately chose not to patent his invention, believing an open, free web would grow faster and further than a licensed one."},
- {q:"This free, open-source operating system kernel was created by a Finnish student in 1991 and now underpins everything from Android phones to most of the internet's servers.", a:"Linux (Linus Torvalds)", f:"Torvalds originally wanted to call it 'Freax'; a colleague uploaded it to a server under the name 'Linux' instead, and the name stuck."},
- {q:"Built in the US during WWII, this machine is often considered the first Turing-complete, general-purpose electronic computer.", a:"ENIAC", f:"It weighed nearly 30 tons and originally required a team of women &mdash; the 'ENIAC programmers' &mdash; to physically rewire it for each new task, since programming languages didn't yet exist."},
- {q:"This peer-to-peer file-sharing protocol splits files into small pieces distributed among many users simultaneously, rather than one central server.", a:"BitTorrent", f:"It was created in 2001 by programmer Bram Cohen, partly to solve the bandwidth problem that had crippled centralized services like Napster."},
- {q:"Often called the first computer programmer, this 19th-century mathematician wrote notes on Charles Babbage's unbuilt Analytical Engine that anticipated modern coding concepts.", a:"Ada Lovelace", f:"She was the only legitimate child of the poet Lord Byron, though her mother deliberately steered her toward mathematics to avoid what she saw as her father's 'madness.'"},
- {q:"This 2010 malware is believed to have physically sabotaged centrifuges in Iran's nuclear enrichment programme.", a:"Stuxnet", f:"It's widely believed (though never officially confirmed) to have been a joint US-Israeli operation &mdash; one of the first known cyberweapons to cause physical damage."},
- {q:"This 2018 EU law reshaped how companies worldwide must handle user data and consent, with fines reaching up to 4% of global revenue.", a:"General Data Protection Regulation (GDPR)", f:"It's why so many websites suddenly started showing cookie-consent pop-ups to every visitor, regardless of where they're browsing from."}
+ {type:"bu", clues:[
+   "This 1965 observation about transistor density was only meant to project a decade forward by its author.",
+   "It has instead roughly held for over 50 years, becoming a de facto target the entire chip industry races to hit.",
+   "Its author co-founded a chipmaker whose name is now synonymous with 'Inside' stickers on laptops."
+  ], a:"Moore's Law (Gordon Moore, co-founder of Intel)", f:"Moore made the observation in a 1965 magazine article, based on just a handful of data points &mdash; a remarkably casual origin for a 'law' that shaped an entire industry's planning cycles."},
+ {type:"bu", clues:[
+   "Its inventor deliberately chose not to patent it, believing an open, free system would spread further than a licensed one.",
+   "He built it at CERN in 1989, originally just to help scientists share documents between different computers.",
+   "It's now simply three letters everyone types before a dot-com."
+  ], a:"World Wide Web (Tim Berners-Lee)", f:"Berners-Lee has said giving it away for free, rather than patenting it, was the single decision he's proudest of."},
+ {type:"bu", clues:[
+   "Its creator originally wanted to name it something else entirely; a colleague uploaded it under a different name that stuck instead.",
+   "It's a free, open-source kernel first released by a Finnish student in 1991.",
+   "It now runs on most of the world's servers and every Android phone."
+  ], a:"Linux (Linus Torvalds)", f:"Torvalds had wanted to call it 'Freax'; a friend hosting the files renamed the directory 'Linux' instead, and the name simply stuck."},
+ {type:"bu", clues:[
+   "Considered the first Turing-complete, general-purpose electronic computer, built in the US during WWII.",
+   "It weighed nearly 30 tons and had no stored programs &mdash; a team had to physically rewire it for each new task.",
+   "That rewiring team was entirely composed of women, since programming languages didn't yet exist to make the job easier."
+  ], a:"ENIAC", f:"Those women, including Kay McNulty and Betty Jennings among others, are now recognised as the first computer programmers in history &mdash; a fact largely overlooked for decades."},
+ {type:"cn", prompt:["A 2010 malware","Iranian nuclear centrifuges","Physical sabotage caused entirely through code","A cyberattack never officially claimed by any government"],
+   a:"Stuxnet",
+   f:"It's widely believed, though never officially confirmed, to have been a joint US-Israeli operation &mdash; one of the first cyberweapons known to cause physical, not just digital, damage."},
+ {type:"cn", prompt:["A 19th-century mathematician","Lord Byron's only legitimate daughter","Notes on an unbuilt 'Analytical Engine'","Often called the first computer programmer"],
+   a:"Ada Lovelace",
+   f:"Her mother deliberately steered her toward mathematics specifically to counter what she saw as her poet father's dangerous temperament."}
 ]},
 
 {cat:"Indian Cinema — Classics & Regional", items:[
- {q:"This 1975 multi-starrer, often called Bollywood's greatest film, features the dacoit villain Gabbar Singh and the line-perfect duo Jai and Veeru.", a:"Sholay", f:"It initially flopped in its opening week before word of mouth turned it into the highest-grossing Indian film of its era, running in one Mumbai theatre for over five continuous years."},
- {q:"Satyajit Ray's directorial debut follows a poor Bengali family in rural Bengal and became the first part of a trilogy centered on young Apu.", a:"Pather Panchali", f:"Ray financed much of it himself, at one point pawning his wife's jewellery; it won a special award at Cannes in 1956."},
- {q:"This actor, nicknamed the 'Angry Young Man' of 1970s Hindi cinema, rose to stardom through Salim-Javed scripted films like Zanjeer and Deewaar.", a:"Amitabh Bachchan", f:"He was reportedly rejected early on by All India Radio for having a voice deemed unsuitable &mdash; that same voice later became one of Indian cinema's most iconic."},
- {q:"This scriptwriting duo, Salim Khan and Javed Akhtar, wrote Zanjeer, Deewaar and Sholay, effectively inventing the Bollywood 'angry young man' template.", a:"Salim-Javed", f:"They were, at the time, unusually credited and paid like stars themselves &mdash; unprecedented for writers in an industry usually built around actors."},
- {q:"This 1995 romance, still running continuously at a single Mumbai theatre decades after release, is considered the longest continuously-screened film in Indian cinema history.", a:"Dilwale Dulhania Le Jayenge (DDLJ)", f:"That theatre is Maratha Mandir &mdash; the film has played there in an unbroken run since its 1995 release."},
- {q:"This Tamil superstar, born Shivaji Rao Gaekwad, is known for his signature style of flipping cigarettes and sunglasses onscreen.", a:"Rajinikanth", f:"He worked as a bus conductor in Bangalore before joining a film institute and being spotted by director K. Balachander."},
- {q:"This two-part period-action franchise, directed by S.S. Rajamouli, follows a prince's fight against a tyrant king and shattered Indian box-office records.", a:"Baahubali", f:"Its second part's opening weekend outgrossed several Hollywood blockbusters in India, and its cliffhanger question ('why did Kattappa kill Baahubali?') became a genuine national obsession before release."},
- {q:"This 2018 biopic, starring Keerthy Suresh, dramatizes the rise and tragic decline of the Telugu-Tamil actress Savitri.", a:"Mahanati", f:"Savitri was one of South Indian cinema's biggest stars in the 1950s-60s before financial ruin and ill health led to her early death at 45."}
+ {type:"bu", clues:[
+   "This 1975 film initially flopped in its opening week before word of mouth turned it into a phenomenon.",
+   "It ran continuously at a single Mumbai theatre for over five years straight.",
+   "Its dacoit villain, with a memorably harsh voice, is often called Hindi cinema's greatest."
+  ], a:"Sholay (villain: Gabbar Singh)", f:"The role of Gabbar Singh was reportedly first offered to other actors before Amjad Khan took it &mdash; and turned a career-making performance out of it."},
+ {type:"bu", clues:[
+   "This 1995 romance has played, without interruption, at a single Mumbai theatre since its release.",
+   "It's widely considered the longest continuously-running film in Indian cinema history.",
+   "It cemented a signature on-screen pairing that defined a decade of Bollywood romance."
+  ], a:"Dilwale Dulhania Le Jayenge / DDLJ (Shah Rukh Khan and Kajol)", f:"That theatre is Maratha Mandir &mdash; the film has run there continuously since 1995, decades longer than almost any other release worldwide."},
+ {type:"bu", clues:[
+   "This scriptwriting duo were, unusually for the era, credited and paid almost like stars in their own right.",
+   "They wrote Zanjeer, Deewaar and Sholay, effectively inventing Bollywood's 'angry young man' template.",
+   "Their hyphenated combined surnames became shorthand for peak 1970s Hindi cinema."
+  ], a:"Salim-Javed (Salim Khan and Javed Akhtar)", f:"Before splitting up professionally in the 1980s, the duo is credited with some of the highest-grossing Hindi screenplays of their era."},
+ {type:"bu", clues:[
+   "Born Shivaji Rao Gaekwad, this actor once worked as a bus conductor.",
+   "He was spotted and mentored by a director who insisted he adopt a new screen name.",
+   "He's now known for his signature sunglasses-and-cigarette flourishes and decades of box-office dominance in Tamil cinema."
+  ], a:"Rajinikanth", f:"That mentoring director was K. Balachander, who cast him in a supporting role that quickly proved impossible to ignore."},
+ {type:"cn", prompt:["Satyajit Ray's directorial debut","A boy named Apu growing up in rural Bengal","A special award at the 1956 Cannes Film Festival","Financed partly by pawning the director's wife's jewellery"],
+   a:"Pather Panchali (the Apu Trilogy)",
+   f:"Ray won a Cannes award for 'Best Human Document' &mdash; an unusual, bespoke category, reflecting how unlike anything else the jury had seen the film was."},
+ {type:"cn", prompt:["S.S. Rajamouli","A two-part period-action franchise","A loyal servant's mysterious killing of his own king","A single pre-release question that became a national obsession"],
+   a:"Baahubali",
+   f:"That question &mdash; 'why did Kattappa kill Baahubali?' &mdash; drove speculation for the entire year between the franchise's two parts."}
 ]},
 
-{cat:"Indian History, Freedom Movement & Politics", items:[
- {q:"In this 1919 Amritsar massacre, troops under General Dyer fired without warning on an unarmed crowd gathered in an enclosed garden.", a:"Jallianwala Bagh massacre", f:"The garden had only one narrow exit, which Dyer's troops blocked, trapping the crowd &mdash; some jumped into a well inside the garden to escape the gunfire."},
- {q:"With Japanese backing during WWII, Subhas Chandra Bose organized this armed force to fight British colonial rule militarily rather than through non-violence.", a:"Indian National Army (Azad Hind Fauj)", f:"Its slogan 'Jai Hind' and rallying cry 'Give me blood, and I shall give you freedom' both trace back to Bose."},
- {q:"For 21 months from 1975-77, Indira Gandhi suspended elections and civil liberties nationwide under a controversial constitutional provision.", a:"The Emergency (India)", f:"It was declared officially on grounds of 'internal disturbance,' shortly after a court found her guilty of electoral malpractice in her own 1971 election."},
- {q:"Widely regarded as the principal architect of India's Constitution, this leader also served as independent India's first Law Minister.", a:"B. R. Ambedkar", f:"He chaired the Constitution's Drafting Committee and, born into a Dalit family, later led a mass conversion to Buddhism partly in protest against caste discrimination."},
- {q:"As Finance Minister in 1991, this economist-politician liberalized India's economy amid a severe balance-of-payments crisis, later becoming Prime Minister.", a:"Manmohan Singh (1991 economic reforms)", f:"India had to physically airlift gold reserves to London as collateral for an IMF loan that same year &mdash; a low point the reforms were designed to prevent from recurring."},
- {q:"This 17th-century Maratha king fought protracted campaigns against the Mughals and is celebrated today as a symbol of resistance and swaraj.", a:"Shivaji", f:"He's famous for a daring escape from house arrest under Aurangzeb, reportedly smuggled out of Agra hidden inside a basket of sweets."},
- {q:"India's 1998 nuclear tests, conducted under the Vajpayee government at a desert site in Rajasthan, were code-named this.", a:"Pokhran-II", f:"The tests were conducted with such secrecy that US satellite surveillance, actively watching the site, reportedly failed to detect preparations in time."}
+{cat:"Indian History, Freedom Movement &amp; Politics", items:[
+ {type:"bu", clues:[
+   "In this 1919 Amritsar massacre, the enclosed garden where the crowd had gathered had only one narrow exit.",
+   "Troops blocked that exit and opened fire on the unarmed crowd without warning.",
+   "Some trapped inside jumped into a well within the garden to escape the gunfire."
+  ], a:"Jallianwala Bagh massacre", f:"That well is now preserved as a memorial and is commonly referred to as the 'Martyrs' Well.'"},
+ {type:"bu", clues:[
+   "Formed with Japanese backing during WWII, this army chose armed struggle over non-violent resistance to British rule.",
+   "Its leader had earlier escaped house arrest and travelled in disguise through Afghanistan and Europe to reach Axis powers.",
+   "His famous rallying cry promised freedom in exchange for blood, and is still widely quoted today."
+  ], a:"Indian National Army (Subhas Chandra Bose)", f:"Bose's disappearance and disputed death in a 1945 plane crash remain a subject of ongoing historical debate and conspiracy theories in India."},
+ {type:"bu", clues:[
+   "This 21-month period saw civil liberties and elections suspended nationwide under a constitutional provision meant for wartime or internal disturbance.",
+   "It was declared shortly after a court found the sitting Prime Minister guilty of electoral malpractice in her own election.",
+   "Press censorship, mass arrests, and forced sterilizations marked this period."
+  ], a:"The Emergency (India), 1975-77 (Indira Gandhi)", f:"The Allahabad High Court ruling that triggered it, in the Raj Narain case, found Gandhi guilty of relatively minor procedural violations &mdash; but the political fallout was anything but minor."},
+ {type:"bu", clues:[
+   "This leader chaired the committee that drafted independent India's Constitution.",
+   "He served as the nation's first Law Minister.",
+   "Born into a Dalit family, he later led a mass conversion to Buddhism, partly as protest against caste discrimination."
+  ], a:"B. R. Ambedkar", f:"That 1956 conversion in Nagpur is estimated to have involved several hundred thousand people converting alongside him in a single ceremony."},
+ {type:"cn", prompt:["A Rajasthan desert site","A code name ending in 'II'","Satellite surveillance that reportedly missed the preparations","1998, under the Vajpayee government"],
+   a:"Pokhran-II (India's 1998 nuclear tests)",
+   f:"The secrecy was reportedly so tight that even the tests' exact timing caught US intelligence, actively watching the site, off guard."},
+ {type:"cn", prompt:["Sardar Patel","V. P. Menon","Princely states invited to a conference on accession","Some rulers rejecting the offer outright"],
+   a:"The integration of India's princely states after independence",
+   f:"Patel and Menon are widely credited with persuading over 500 princely states to accede to the Indian Union within just over a year."}
 ]},
 
-{cat:"Indian Science & Scientists", items:[
- {q:"This physicist remains the only person to win a Nobel Prize in the sciences for research carried out entirely within India, honoured in 1930 for his work on light scattering.", a:"C. V. Raman", f:"He reportedly got the idea for his prize-winning effect while observing the blue colour of the Mediterranean Sea on a ship voyage home from Europe."},
- {q:"Often called the father of the Indian space programme, this physicist founded what became ISRO and pushed for India's first satellite launches.", a:"Vikram Sarabhai", f:"He convinced a young scientist, Abdul Kalam, to join the fledgling space programme &mdash; Kalam would later lead India's missile programme and become President."},
- {q:"This largely self-taught mathematician from Madras sent his unconventional theorems to Cambridge professor G.H. Hardy, who recognised in them work 'of the very highest class.'", a:"Srinivasa Ramanujan", f:"He died at just 32, but Hardy later said discovering him was the one 'romantic incident' of his own mathematical life."},
- {q:"This scientist, central to India's missile and nuclear programmes, later served as President of India and remains widely nicknamed the 'Missile Man of India.'", a:"A. P. J. Abdul Kalam", f:"Despite his scientific and political stature, he was known for living simply and reportedly requested his university salary be donated to a trust rather than kept."},
- {q:"An entire class of subatomic particles is named 'bosons' in honour of this Indian physicist's statistical work, developed in correspondence with Einstein.", a:"Satyendra Nath Bose", f:"Bose never won a Nobel Prize for this foundational work, despite the particle class named for him underpinning much of modern quantum physics."},
- {q:"This 2023 Indian lunar mission achieved a soft landing near the Moon's south pole, a region no other country's mission had successfully reached before.", a:"Chandrayaan-3", f:"It made India the fourth country to achieve any soft lunar landing, and the first to do so specifically near the lunar south pole."},
- {q:"This agricultural scientist is widely credited as the chief architect of India's Green Revolution, helping introduce high-yield wheat and rice varieties from the 1960s.", a:"M. S. Swaminathan", f:"He worked closely with Norman Borlaug, the American 'father' of the broader global Green Revolution, adapting Borlaug's wheat varieties for Indian conditions."}
+{cat:"Indian Science &amp; Scientists", items:[
+ {type:"bu", clues:[
+   "This physicist reportedly got the idea for his Nobel-winning discovery while observing the blue of the Mediterranean Sea on a ship voyage home.",
+   "He remains the only person to win a Nobel Prize in the sciences for research carried out entirely within India.",
+   "A specific light-scattering effect now bears his name."
+  ], a:"C. V. Raman (Raman scattering / Raman effect)", f:"He won the Nobel Prize in Physics in 1930, just a few years after making the observation &mdash; unusually fast recognition by Nobel standards."},
+ {type:"bu", clues:[
+   "Largely self-taught, this mathematician sent unsolicited theorems to a Cambridge professor who was stunned by their brilliance.",
+   "He died at just 32, yet left behind notebooks mathematicians are still mining for insights a century later.",
+   "A 2015 biographical film about him starred Dev Patel."
+  ], a:"Srinivasa Ramanujan", f:"That film was 'The Man Who Knew Infinity,' based on the biography of the same name."},
+ {type:"bu", clues:[
+   "An entire class of subatomic particles is named for this physicist, honouring statistical work he developed in correspondence with Einstein.",
+   "Despite that foundational contribution, he never won a Nobel Prize for it.",
+   "The particle class named for him includes the photon."
+  ], a:"Satyendra Nath Bose (bosons)", f:"The Higgs boson &mdash; itself named partly after this same particle class &mdash; is one of the most famous examples of a boson."},
+ {type:"bu", clues:[
+   "This 2023 Indian mission achieved a soft landing in a lunar region no other country's mission had successfully reached.",
+   "It made India the fourth country ever to achieve any soft lunar landing at all.",
+   "It touched down near the Moon's south pole."
+  ], a:"Chandrayaan-3", f:"India achieved this only four years after Chandrayaan-2's lander crashed attempting the same feat &mdash; a rare quick turnaround from failure to success in space exploration."},
+ {type:"cn", prompt:["Vikram Sarabhai","A young scientist he personally recruited, named Abdul Kalam","India's founding of a national space programme","A fishing village in Kerala used as an early launch site"],
+   a:"ISRO (Indian Space Research Organisation)",
+   f:"That early launch site was Thumba, near Thiruvananthapuram &mdash; rockets in the earliest tests were reportedly transported by bicycle and bullock cart."},
+ {type:"cn", prompt:["Norman Borlaug","High-yield wheat varieties adapted for Indian soil","M. S. Swaminathan","India moving from food shortage to food surplus"],
+   a:"The Green Revolution in India",
+   f:"Borlaug, an American agronomist, is often called the global father of the Green Revolution; Swaminathan is credited with adapting and driving it specifically within India."}
 ]}
 ];
 
-// ---------- render ----------
-let flat = [];
-DATA.forEach((sec, si) => sec.items.forEach((it, ii) => flat.push({...it, cat:sec.cat, id: si+'-'+ii})));
+const CLUEDO = [
+  {r:"Kite-flying founding father, later immortalized on the note you'd use to pay for the kite string.", a:"Benjamin Franklin"},
+  {r:"Motorcycle doctor turned revolutionary, now more famous on dorm-room walls than in any hospital.", a:"Che Guevara"},
+  {r:"Bear of the north stormed a hill in Cuba on his way to the White House.", a:"Theodore ('Teddy') Roosevelt"},
+  {r:"Kenyan roots, island upbringing, became his nation's chief executive.", a:"Barack Obama"},
+  {r:"No mobster, but this 'Invincible' toured the old country and never lost a single Test.", a:"Don Bradman (1948 'Invincibles')"}
+];
 
-const STORAGE_KEY = 'coq-deck-marks-v1';
-let marks = {};
-try { marks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e){ marks = {}; }
-function saveMarks(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(marks)); }catch(e){} }
+// -------- state --------
+const STORE_KEY = 'coq-deck-v2';
+let state = {marks:{}, revealed:{}, score:0};
+try { state = Object.assign(state, JSON.parse(localStorage.getItem(STORE_KEY)||'{}')); } catch(e){}
+function persist(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
 
 let activeCat = 'All';
-let order = DATA.map(s=>s.cat);
+let flatCount = DATA.reduce((n,s)=>n+s.items.length,0);
+
+function chipLabel(cat){ return cat.replace('Indian ','IN: '); }
 
 function renderChips(){
   const row = document.getElementById('chipRow');
   row.innerHTML = '';
   const all = document.createElement('div');
-  all.className = 'chip' + (activeCat==='All' ? ' active' : '');
-  all.textContent = 'All (' + flat.length + ')';
-  all.onclick = () => { activeCat='All'; renderChips(); renderMain(); };
+  all.className = 'chip' + (activeCat==='All'?' active':'');
+  all.textContent = 'All ('+flatCount+')';
+  all.onclick = ()=>{ activeCat='All'; renderChips(); renderMain(); };
   row.appendChild(all);
   DATA.forEach(sec=>{
     const c = document.createElement('div');
-    c.className = 'chip' + (activeCat===sec.cat ? ' active' : '');
-    c.textContent = sec.cat.split(' ')[0] === 'Indian' ? sec.cat.replace('Indian ','IN: ') : sec.cat;
-    c.textContent += ' ('+sec.items.length+')';
-    c.onclick = () => { activeCat = sec.cat; renderChips(); renderMain(); };
+    c.className = 'chip' + (activeCat===sec.cat?' active':'');
+    c.textContent = chipLabel(sec.cat) + ' ('+sec.items.length+')';
+    c.onclick = ()=>{ activeCat=sec.cat; renderChips(); renderMain(); };
     row.appendChild(c);
   });
 }
 
 function renderStats(){
   const bar = document.getElementById('statsBar');
-  const total = flat.length;
-  const got = flat.filter(f=>marks[f.id]==='got').length;
-  const miss = flat.filter(f=>marks[f.id]==='miss').length;
+  const got = Object.values(state.marks).filter(v=>v==='got').length;
+  const miss = Object.values(state.marks).filter(v=>v==='miss').length;
   bar.innerHTML =
-    '<div class="stat"><b>'+total+'</b> total</div>' +
-    '<div class="stat"><b>'+got+'</b> got it</div>' +
-    '<div class="stat"><b>'+miss+'</b> to review</div>' +
-    '<div class="stat"><b>'+DATA.length+'</b> categories</div>';
+    '<div><b>'+state.score+'</b> pts banked</div>'+
+    '<div><b>'+got+'</b> got it</div>'+
+    '<div><b>'+miss+'</b> to review</div>'+
+    '<div><b>'+flatCount+'</b> questions</div>';
 }
 
-function cardHTML(it, globalIndex){
-  const markState = marks[it.id];
-  const markedClass = markState==='got' ? ' marked-got' : (markState==='miss' ? ' marked-miss' : '');
-  return `
-  <div class="card${markedClass}" data-id="${it.id}">
-    <div class="card-inner">
-      <div class="face front">
-        <div class="qnum">Q ${globalIndex} &middot; ${it.cat}</div>
-        <div class="qtext">${it.q}</div>
-        <div class="tapline">tap to reveal &rarr;</div>
+function keyFor(sec,i){ return sec+'::'+i; }
+
+function buCardHTML(item, key, qn){
+  const rv = state.revealed[key] || 0; // number of clues revealed (0 = just first shown)
+  const pts = [10,7,4];
+  const shown = Math.max(rv,0);
+  const cluesToShow = item.clues.slice(0, shown+1);
+  const answered = !!state.marks[key+'__answered'];
+  let body = '<ol class="clue-list">' + cluesToShow.map(c=>'<li>'+c+'</li>').join('') + '</ol>';
+  let actions = '';
+  if(!answered){
+    const nextPts = pts[Math.min(shown+1,2)];
+    if(shown < item.clues.length-1){
+      actions += '<button class="act" data-act="next" data-key="'+key+'">Next clue (drops to '+nextPts+' pts)</button>';
+    }
+    actions += '<button class="act primary" data-act="answer" data-key="'+key+'">Show answer</button>';
+  }
+  const currentPts = pts[Math.min(shown,2)];
+  let answerBlock = '';
+  if(answered){
+    const markState = state.marks[key];
+    answerBlock = `<div class="answer-box">
+      <div class="ans-label">Answer &middot; worth ${pts[Math.min(state.revealed[key]||0,2)]} pts if buzzed here</div>
+      <div class="ans-text">${item.a}</div>
+      <div class="funda"><b>Funda:</b> ${item.f}</div>
+      <div class="mark-row">
+        <button class="mini-btn got ${markState==='got'?'active':''}" data-mark="got" data-key="${key}">Knew it</button>
+        <button class="mini-btn miss ${markState==='miss'?'active':''}" data-mark="miss" data-key="${key}">Review</button>
       </div>
-      <div class="face back">
-        <div class="ans-label">Answer</div>
-        <div class="ans-text">${it.a}</div>
-        <div class="funda"><b>Funda:</b> ${it.f}</div>
-        <div class="card-actions">
-          <button class="mini-btn got ${markState==='got'?'active':''}" data-act="got">Knew it</button>
-          <button class="mini-btn miss ${markState==='miss'?'active':''}" data-act="miss">Review</button>
-        </div>
+    </div>`;
+  }
+  return `<div class="card">
+    <div class="card-top"><span class="tag bu">Build-Up</span><span class="qidx">Q${qn}</span><span class="points">${answered?'&mdash;':currentPts+' pts'}</span></div>
+    <div class="card-body">${body}${answerBlock}<div class="card-actions">${answered?'':actions}</div></div>
+  </div>`;
+}
+
+function cnCardHTML(item, key, qn){
+  const answered = !!state.marks[key+'__answered'];
+  let answerBlock = '';
+  if(answered){
+    const markState = state.marks[key];
+    answerBlock = `<div class="answer-box">
+      <div class="ans-label">The link</div>
+      <div class="ans-text">${item.a}</div>
+      <div class="funda"><b>Funda:</b> ${item.f}</div>
+      <div class="mark-row">
+        <button class="mini-btn got ${markState==='got'?'active':''}" data-mark="got" data-key="${key}">Knew it</button>
+        <button class="mini-btn miss ${markState==='miss'?'active':''}" data-mark="miss" data-key="${key}">Review</button>
       </div>
+    </div>`;
+  }
+  return `<div class="card">
+    <div class="card-top"><span class="tag cn">Connect</span><span class="qidx">Q${qn}</span></div>
+    <div class="card-body">
+      <ul class="connect-items">${item.prompt.map(p=>'<li>'+p+'</li>').join('')}</ul>
+      ${answered?'':'<div class="card-actions"><button class="act primary" data-act="answer" data-key="'+key+'">Reveal the connection</button></div>'}
+      ${answerBlock}
     </div>
   </div>`;
 }
@@ -383,61 +556,90 @@ function renderMain(){
   sections.forEach((sec, si)=>{
     const head = document.createElement('div');
     head.className = 'section-head';
-    head.innerHTML = `<span class="idx">${String(si+1).padStart(2,'0')}</span><h2>${sec.cat}</h2><span class="count">${sec.items.length} cards</span>`;
+    head.innerHTML = `<span class="idx">${String(si+1).padStart(2,'0')}</span><h2>${sec.cat}</h2>`;
     main.appendChild(head);
-    const line = document.createElement('div');
-    line.className = 'section-line';
-    main.appendChild(line);
-    const grid = document.createElement('div');
-    grid.className = 'grid';
-    sec.items.forEach(it=>{
-      const wrapper = document.createElement('div');
-      wrapper.innerHTML = cardHTML(it, gi++);
-      grid.appendChild(wrapper.firstElementChild);
+    const line = document.createElement('div'); line.className='section-line'; main.appendChild(line);
+    const grid = document.createElement('div'); grid.className='grid';
+    sec.items.forEach((it,ii)=>{
+      const key = keyFor(sec.cat, ii);
+      const html = it.type==='bu' ? buCardHTML(it,key,gi) : cnCardHTML(it,key,gi);
+      gi++;
+      const holder = document.createElement('div');
+      holder.innerHTML = html;
+      grid.appendChild(holder.firstElementChild);
     });
     main.appendChild(grid);
   });
+
+  // cluedo section
+  const cdHead = document.createElement('div');
+  cdHead.className = 'section-head';
+  cdHead.innerHTML = `<span class="idx">BONUS</span><h2>Clue-do Round</h2>`;
+  main.appendChild(cdHead);
+  const cdLine = document.createElement('div'); cdLine.className='section-line'; main.appendChild(cdLine);
+  const cdGrid = document.createElement('div'); cdGrid.className='grid';
+  CLUEDO.forEach((c,i)=>{
+    const key = 'cluedo::'+i;
+    const answered = !!state.marks[key+'__answered'];
+    const el = document.createElement('div');
+    el.innerHTML = `<div class="cluedo-card">
+      <div class="tag cd" style="margin-bottom:8px;display:inline-block;">Clue-do</div>
+      <div class="cluedo-riddle">${c.r}</div>
+      ${answered ? '<div class="cluedo-ans"><b>'+c.a+'</b></div>' : '<button class="act primary" data-act="answer" data-key="'+key+'" data-cluedo="1">Reveal</button>'}
+    </div>`;
+    cdGrid.appendChild(el.firstElementChild);
+  });
+  main.appendChild(cdGrid);
+  const foot = document.createElement('footer');
+  foot.textContent = '13 of 26 categories included, now in real Build-Up + Connect format — ask for the rest any time.';
+  main.appendChild(foot);
+
   attachHandlers();
   renderStats();
 }
 
 function attachHandlers(){
-  document.querySelectorAll('.card').forEach(card=>{
-    card.addEventListener('click', (e)=>{
-      if(e.target.closest('.mini-btn')) return;
-      card.classList.toggle('flipped');
+  document.querySelectorAll('[data-act="next"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.dataset.key;
+      state.revealed[key] = (state.revealed[key]||0) + 1;
+      persist();
+      renderMain();
     });
   });
-  document.querySelectorAll('.mini-btn').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      const card = btn.closest('.card');
-      const id = card.dataset.id;
-      const act = btn.dataset.act;
-      marks[id] = (marks[id] === act) ? undefined : act;
-      if(marks[id] === undefined) delete marks[id];
-      saveMarks();
+  document.querySelectorAll('[data-act="answer"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.dataset.key;
+      if(btn.dataset.cluedo){
+        state.marks[key+'__answered'] = true;
+      } else {
+        state.marks[key+'__answered'] = true;
+      }
+      persist();
+      renderMain();
+    });
+  });
+  document.querySelectorAll('[data-mark]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.dataset.key;
+      const val = btn.dataset.mark;
+      const prev = state.marks[key];
+      state.marks[key] = (prev===val) ? undefined : val;
+      if(state.marks[key]===undefined) delete state.marks[key];
+      if(val==='got' && state.marks[key]==='got'){
+        // no extra scoring complexity beyond points shown; scoring is illustrative
+      }
+      persist();
       renderMain();
     });
   });
 }
 
-document.getElementById('shuffleBtn').onclick = () => {
-  DATA.forEach(sec=>{
-    for(let i=sec.items.length-1;i>0;i--){
-      const j = Math.floor(Math.random()*(i+1));
-      [sec.items[i], sec.items[j]] = [sec.items[j], sec.items[i]];
-    }
-  });
+document.getElementById('resetBtn').onclick = ()=>{
+  state = {marks:{}, revealed:{}, score:0};
+  persist();
+  renderChips();
   renderMain();
-};
-document.getElementById('resetBtn').onclick = () => {
-  marks = {};
-  saveMarks();
-  renderMain();
-};
-document.getElementById('flipAllBtn').onclick = () => {
-  document.querySelectorAll('.card').forEach(c=>c.classList.toggle('flipped'));
 };
 
 renderChips();
