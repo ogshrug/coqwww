@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Funda Set — Music &amp; Sports</title>
+<style>
+  :root{
+    --ink:#f4efe4;
+    --paper:#0f1210;
+    --paper-raised:#161b17;
+    --line:#2c342d;
+    --gold:#c9a24b;
+    --gold-dim:#8a7238;
+    --green:#3f7d5c;
+    --red:#a5533a;
+    --dim:#8f978e;
+    --mono: 'Courier New', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 15% 0%, rgba(201,162,75,0.06), transparent 40%),
+      var(--paper);
+    color:var(--ink);
+    font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:80px;
+  }
+  a{color:inherit;}
+
+  header.top{
+    padding:38px 20px 24px;
+    border-bottom:1px solid var(--line);
+    text-align:center;
+    position:relative;
+  }
+  header.top .kicker{
+    font-family:var(--mono);
+    letter-spacing:0.35em;
+    text-transform:uppercase;
+    font-size:11px;
+    color:var(--gold);
+    margin-bottom:10px;
+  }
+  header.top h1{
+    font-size:clamp(28px,7vw,46px);
+    margin:0 0 8px;
+    font-weight:400;
+    letter-spacing:0.01em;
+  }
+  header.top h1 em{
+    font-style:italic;
+    color:var(--gold);
+  }
+  header.top p.sub{
+    color:var(--dim);
+    font-size:14px;
+    max-width:520px;
+    margin:0 auto;
+    font-family:var(--mono);
+  }
+
+  nav.tabs{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding:16px 16px;
+    position:sticky;
+    top:0;
+    background:rgba(15,18,16,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    z-index:10;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:none;
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    background:transparent;
+    color:var(--dim);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:8px 14px;
+    cursor:pointer;
+    transition:all .15s ease;
+    white-space:nowrap;
+  }
+  nav.tabs button.active{
+    color:var(--paper);
+    background:var(--gold);
+    border-color:var(--gold);
+  }
+  nav.tabs button:active{transform:scale(0.96);}
+
+  main{max-width:720px;margin:0 auto;padding:10px 16px 40px;}
+
+  section.cat{display:none;padding-top:18px;}
+  section.cat.active{display:block;}
+
+  .cat-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    border-bottom:2px solid var(--gold-dim);
+    padding-bottom:10px;
+    margin-bottom:18px;
+  }
+  .cat-head h2{
+    margin:0;
+    font-weight:400;
+    font-size:22px;
+    letter-spacing:0.01em;
+  }
+  .cat-head .count{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--dim);
+  }
+
+  .qcard{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-left:3px solid var(--gold-dim);
+    border-radius:6px;
+    margin-bottom:12px;
+    overflow:hidden;
+    transition:border-color .2s ease;
+  }
+  .qcard.revealed{border-left-color:var(--green);}
+  .qcard button.qbtn{
+    all:unset;
+    display:flex;
+    gap:12px;
+    width:100%;
+    padding:16px 16px 16px 14px;
+    cursor:pointer;
+    box-sizing:border-box;
+  }
+  .qnum{
+    font-family:var(--mono);
+    color:var(--gold);
+    font-size:13px;
+    flex:none;
+    padding-top:2px;
+  }
+  .qtext{
+    font-size:15.5px;
+    color:var(--ink);
+  }
+  .qtext .topic-tag{
+    display:block;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--dim);
+    margin-bottom:5px;
+  }
+  .answer{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .25s ease, padding .25s ease;
+    padding:0 16px 0 42px;
+    font-family:var(--mono);
+    font-size:13.5px;
+    color:#dfe6d9;
+    border-top:1px dashed var(--line);
+  }
+  .qcard.revealed .answer{
+    max-height:400px;
+    padding:14px 16px 16px 42px;
+  }
+  .answer .lead{
+    color:var(--green);
+    font-weight:bold;
+    margin-right:6px;
+  }
+  .answer a.wiki{
+    display:inline-block;
+    margin-top:8px;
+    color:var(--gold);
+    text-decoration:none;
+    border-bottom:1px dotted var(--gold-dim);
+    font-size:12px;
+  }
+  .media-row{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    margin-top:10px;
+    flex-wrap:wrap;
+  }
+  .media-thumb{
+    flex:none;
+    width:88px;
+    height:88px;
+    border-radius:6px;
+    overflow:hidden;
+    background:#1c221d;
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .media-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    opacity:0;
+    transition:opacity .35s ease;
+  }
+  .media-thumb img.loaded{opacity:1;}
+  .media-thumb .spin{
+    width:16px;height:16px;border-radius:50%;
+    border:2px solid var(--line);
+    border-top-color:var(--gold);
+    animation:spin 0.8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .media-blurb{
+    flex:1;
+    min-width:160px;
+    font-family:Georgia, serif;
+    font-size:13px;
+    color:#c8cfc4;
+    line-height:1.45;
+  }
+  .listen-btn{
+    all:unset;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:10px;
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:0.04em;
+    color:var(--gold);
+    border:1px solid var(--gold-dim);
+    border-radius:999px;
+    padding:6px 12px;
+    cursor:pointer;
+  }
+  .listen-btn:active{transform:scale(0.96);}
+  .listen-btn.playing{background:var(--gold);color:var(--paper);}
+  .audio-note{
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--dim);
+    margin-top:6px;
+  }
+
+  footer{
+    text-align:center;
+    padding:30px 20px 10px;
+    color:var(--dim);
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.05em;
+  }
+
+  .subgroup-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold-dim);
+    margin:26px 0 10px;
+    padding-top:6px;
+    border-top:1px solid var(--line);
+  }
+  .subgroup-label:first-of-type{border-top:none;margin-top:4px;}
+
+  @media (max-width:400px){
+    .qtext{font-size:14.5px;}
+    header.top h1{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="kicker">Set No. 07 · Live Round</div>
+  <h1>The <em>Funda</em> Set</h1>
+  <p class="sub">Music &amp; Sports — connect-the-dots questions built for a real quiz night. Tap any question to reveal the answer.</p>
+</header>
+
+<nav class="tabs" id="tabs"></nav>
+
+<main id="main"></main>
+
+<footer>Sourced &amp; adapted from Wikipedia topic list · Music (30) · Indian Music (20) · Sports (60) · Indian Sports Beyond Cricket (25) · Formula 1 (25) · Man Utd &amp; Premier League (20)</footer>
+
+<script>
+const DATA = [
+{
+  cat: "Music",
+  items: [
+    ["The Beatles","This Liverpool four-piece's final rooftop concert in January 1969, atop their Apple Corps building on Savile Row, was broken up by police for noise complaints — name the band."],
+    ["Wolfgang Amadeus Mozart","He composed his first symphony at age 8 and, in one famous (probably apocryphal) story, transcribed Allegri's closely-guarded 'Miserere' from memory after a single hearing in the Sistine Chapel. Name the child prodigy."],
+    ["Ludwig van Beethoven","He composed his Ninth Symphony, premiered 1824, while almost completely deaf — he reportedly had to be turned around to see the audience's applause since he couldn't hear it. Name the composer."],
+    ["Johann Sebastian Bach","This Baroque composer fathered 20 children and worked for decades as a church organist and choirmaster in Leipzig, largely unrecognized in his lifetime compared to his posthumous fame. Name him."],
+    ["Frédéric Chopin","This composer, essentially the poet of the piano, asked that his heart be removed after death and returned to Warsaw — it's preserved in a pillar at Holy Cross Church. Name him."],
+    ["Freddie Mercury","This Queen frontman, born Farrokh Bulsara in Zanzibar and raised partly in India, delivered arguably rock's greatest live performance at Live Aid 1985 at Wembley. Name him."],
+    ["Michael Jackson","This artist's 1982 album 'Thriller' remains the best-selling album of all time worldwide, and its title track's music video pioneered the short-film format for pop videos. Name him."],
+    ["Bob Dylan","In 2016 this singer-songwriter became the first musician to win the Nobel Prize in Literature, 'for having created new poetic expressions within the great American song tradition.' Name him."],
+    ["Taylor Swift","Her 2023–24 stadium tour became the first tour ever to gross over a billion dollars, and its concert film release briefly rattled the release calendars of major movie studios. Name her."],
+    ["Kendrick Lamar","In 2018 this rapper became the first non-classical, non-jazz artist to win the Pulitzer Prize for Music, for his album 'DAMN.' Name him."],
+    ["Beyoncé","With her 2024 album 'Cowboy Carter,' this artist became the first Black woman to top the Billboard Country Albums chart, deliberately reclaiming country music's Black roots. Name her."],
+    ["Grammy Award","Officially called a 'Gramophone Award,' this trophy is a small gold-plated statuette shaped like the horn of an old gramophone, handed out annually by the Recording Academy. Name the award."],
+    ["Eurovision Song Contest","First held in 1956 and inspired by Italy's Sanremo Music Festival, this contest gave ABBA their international break when they won in 1974 with 'Waterloo.' Name the contest."],
+    ["Woodstock","Held on a dairy farm in Bethel, New York in August 1969, this festival drew roughly 400,000 people and became the defining symbol of the 1960s counterculture. Name the festival."],
+    ["Live Aid","Organised by Bob Geldof and Midge Ure to raise funds for Ethiopian famine relief, this dual-venue (Wembley and JFK Stadium) concert on 13 July 1985 is famous for Queen's set. Name the event."],
+    ["Elvis Presley","Known as 'the King of Rock and Roll,' this Memphis-raised singer died at his Graceland mansion in 1977, and conspiracy theories about his survival persist to this day. Name him."],
+    ["Pink Floyd","This English band's 1973 album 'The Dark Side of the Moon' spent over 900 weeks on the Billboard 200 chart, and its cover features a prism refracting light into a spectrum. Name the band."],
+    ["Led Zeppelin","This band's 1971 untitled fourth album features the eight-minute epic 'Stairway to Heaven,' long a staple (and cliché) of guitar-shop 'no' signs. Name the band."],
+    ["Queen (band)","Formed in London in 1970 with Freddie Mercury on vocals, this band's 'Bohemian Rhapsody' famously refused to fit any single genre, blending rock opera with balladry. Name the band."],
+    ["The Rolling Stones","Formed in 1962 and still touring six decades later, this band's tongue-and-lips logo, designed by John Pasche, is one of the most recognised logos in music history. Name the band."],
+    ["Jazz","Originating in New Orleans in the late 19th/early 20th century from blues and ragtime roots, this genre is built on improvisation and swung rhythms. Name the genre."],
+    ["Blues","This genre, born among African-American communities in the Deep South around the 1860s–1890s, gave rise to jazz, R&B, and rock and roll through its characteristic 12-bar structure. Name it."],
+    ["Hip hop music","Emerging in the Bronx in the 1970s at parties DJ'd by figures like Kool Herc, this genre's four pillars are traditionally rapping, DJing, breakdancing, and graffiti. Name the genre."],
+    ["Bob Marley","This Jamaican musician, born Robert Nesta Marley, brought reggae and Rastafarian themes to a global audience with songs like 'No Woman, No Cry' and 'Redemption Song.' Name him."],
+    ["Nina Simone","Trained as a classical pianist before being rejected from the Curtis Institute (which she believed was due to racism), this artist became a defining voice of the American civil rights movement. Name her."],
+    ["Miles Davis","This trumpeter's 1959 album 'Kind of Blue' is the best-selling jazz album of all time and a landmark of modal jazz. Name him."],
+    ["Symphony No. 9 (Beethoven)","This choral symphony sets Schiller's 'Ode to Joy' in its final movement and its main theme was adopted as the anthem of the European Union. Name the work."],
+    ["Amadeus (1984 film)","This Milos Forman film, based on a stage play, dramatises Mozart's life through the eyes of his rival Antonio Salieri and won eight Academy Awards including Best Picture. Name the film."],
+    ["MTV","Launched in 1981 with the first video 'Video Killed the Radio Star,' this channel transformed music promotion by making the music video a central marketing tool. Name the channel."],
+    ["Billboard Hot 100","This is the American music industry's standard singles popularity chart, combining sales, radio airplay, and streaming data since it launched in 1958. Name the chart."],
+  ]
+},
+{
+  cat: "Indian Music",
+  items: [
+    ["Hindustani classical music","This North Indian classical tradition, rooted in ragas and talas, evolved distinctly from its southern counterpart partly due to Persian and Mughal influence. Name the tradition."],
+    ["Carnatic music","This South Indian classical tradition centres on composers called the 'Trinity' (Tyagaraja, Muthuswami Dikshitar, Syama Sastri) and is closely tied to Tamil, Telugu, and Kannada devotional song. Name it."],
+    ["Ravi Shankar","This sitar virtuoso, father of Norah Jones and Anoushka Shankar, mentored George Harrison and helped popularise Indian classical music in the West via Woodstock and the Concert for Bangladesh. Name him."],
+    ["Sitar","A long-necked plucked instrument with sympathetic strings that give it its characteristic drone-like resonance, central to Hindustani classical music. Name the instrument."],
+    ["Tabla","This pair of hand drums — a smaller wooden 'dayan' and a larger metal 'bayan' — is the principal percussion instrument of Hindustani classical music. Name it."],
+    ["Zakir Hussain","Son of tabla legend Alla Rakha, this virtuoso collaborated widely across genres, including with the fusion group Shakti alongside John McLaughlin, and won multiple Grammy Awards. Name him."],
+    ["Lata Mangeshkar","Revered as the 'Nightingale of India,' this playback singer recorded in dozens of languages across a career spanning eight decades and was honoured with the Bharat Ratna. Name her."],
+    ["Mohammed Rafi","One of Hindi cinema's most versatile playback singers, famed for his range across romantic, comic, and devotional songs for decades of Bollywood stars. Name him."],
+    ["Kishore Kumar","This playback singer-actor was famed for his yodelling technique inspired by Western singers, and became the definitive voice for Rajesh Khanna and later Amitabh Bachchan. Name him."],
+    ["A. R. Rahman","Nicknamed the 'Mozart of Madras,' this composer won two Academy Awards for 'Slumdog Millionaire' and rose to fame after his score for the 1992 film 'Roja.' Name him."],
+    ["Jai Ho (song)","Composed by A. R. Rahman with lyrics by Gulzar for 'Slumdog Millionaire,' this song won the Academy Award and Golden Globe for Best Original Song in 2009. Name the song."],
+    ["M. S. Subbulakshmi","The first musician ever awarded the Bharat Ratna, this Carnatic vocalist famously performed at the United Nations General Assembly. Name her."],
+    ["Bhimsen Joshi","A towering figure of the Kirana gharana in Hindustani classical vocal music, this singer was awarded the Bharat Ratna in 2008. Name him."],
+    ["Qawwali","A form of Sufi devotional singing that developed in the Indian subcontinent, traditionally performed at shrines and associated with poets like Amir Khusrau. Name the genre."],
+    ["Nusrat Fateh Ali Khan","Called 'Shahenshah-e-Qawwali' (King of Kings of Qawwali), this Pakistani vocalist collaborated with Peter Gabriel and Eddie Vedder and brought qawwali to global audiences. Name him."],
+    ["Bhangra","Originating as a Punjabi harvest-festival folk dance, this energetic style, driven by the dhol drum, later fused with hip hop and pop to become a global genre. Name it."],
+    ["Gully Boy","This 2019 film starring Ranveer Singh, loosely inspired by rappers Divine and Naezy, chronicles the Mumbai underground hip-hop scene and was India's Oscar entry that year. Name the film."],
+    ["Coke Studio (Pakistan)","This television series records live studio collaborations fusing traditional South Asian music with contemporary genres, and gave the world 'Pasoori.' Name the show."],
+    ["Sufi music","Devotional music tradition tied to Islamic mysticism, encompassing qawwali and kafi, focused on themes of divine love and union with God. Name the genre."],
+    ["Slumdog Millionaire (soundtrack)","This Danny Boyle film's Oscar-winning score and song, composed by A. R. Rahman, is widely credited with reintroducing Indian film music to a global audience in 2008-09. Name the film."],
+  ]
+},
+{
+  cat: "Sports",
+  items: [
+    ["Bosman ruling","This 1995 European Court of Justice judgment, involving a Belgian footballer, abolished restrictive nationality quotas and allowed players to move clubs on a free transfer at contract's end. Name the ruling."],
+    ["Galácticos","The nickname for Real Madrid's early-2000s policy of signing one global superstar every year — Figo, Zidane, Ronaldo, Beckham — regardless of squad balance. Name the policy/nickname."],
+    ["2005 UEFA Champions League Final","Liverpool trailed AC Milan 3-0 at half-time before scoring three goals in six second-half minutes to level, eventually winning on penalties — remembered as 'The Miracle of Istanbul.' Name the final."],
+    ["Hand of God","Diego Maradona's illegal handball goal against England in the 1986 World Cup quarter-final, scored minutes before his legendary solo 'Goal of the Century.' Name the goal."],
+    ["Goal of the Century","Scored by Diego Maradona against England in the same 1986 World Cup match as the 'Hand of God,' this goal saw him dribble past five English players from his own half. Name it."],
+    ["1950 FIFA World Cup","Hosted by Brazil, this tournament's final match saw Uruguay stun the host nation 2-1 in the Maracanã before nearly 200,000 fans, an event still called the 'Maracanazo.' Name the tournament."],
+    ["La Masia","Barcelona's famed youth academy, based in a former farmhouse, produced Messi, Xavi, Iniesta, and the core of the club's tiki-taka era. Name the academy."],
+    ["Total football","A tactical system pioneered by Rinus Michels' Ajax and the Netherlands in the 1970s (with Johan Cruyff as its embodiment), where any outfield player can take over any other's role fluidly. Name the system."],
+    ["Tiki-taka","A possession-based passing style associated with Pep Guardiola's Barcelona and the Spanish national team of 2008-2012, built on short, quick passes and constant movement. Name the style."],
+    ["Gegenpressing","A German tactical term (literally 'counter-pressing') popularised by Jürgen Klopp, describing immediately pressing the opponent to win the ball back right after losing possession. Name the tactic."],
+    ["False nine","A tactical role for a centre-forward who drops deep into midfield rather than staying on the last line, famously used by Messi under Guardiola at Barcelona. Name the role."],
+    ["The Invincibles","Arsenal's 2003-04 Premier League squad under Arsène Wenger went the entire 38-match league season unbeaten, a feat unmatched since. Name the nickname for this team."],
+    ["Class of '92","The nickname for the group of Manchester United youth academy graduates — including Beckham, Scholes, Giggs, and the Neville brothers — who broke into the first team in the mid-1990s. Name it."],
+    ["Calciopoli","A 2006 Italian football scandal in which several top clubs, including champions Juventus, were found to have influenced referee appointments, leading to Juventus's relegation. Name the scandal."],
+    ["Hillsborough disaster","A human crush at an FA Cup semi-final in Sheffield in 1989 killed 97 Liverpool fans, leading to major reforms including all-seater stadiums in English football. Name the disaster."],
+    ["Heysel Stadium disaster","Violence between Liverpool and Juventus fans before the 1985 European Cup final in Brussels caused a wall collapse killing 39 people, leading to a five-year ban on English clubs in Europe. Name the disaster."],
+    ["Munich air disaster","A 1958 plane crash killed 23 people including eight Manchester United players — the 'Busby Babes' — returning from a European Cup match in Belgrade. Name the disaster."],
+    ["El Clásico","The name given to matches between Real Madrid and Barcelona, one of the fiercest and most-watched rivalries in world sport. Name the fixture."],
+    ["Old Firm","The nickname for matches between Glasgow rivals Celtic and Rangers, a fixture entangled with Scotland's religious and political divides. Name the rivalry."],
+    ["Der Klassiker","The nickname for matches between Bayern Munich and Borussia Dortmund, Germany's biggest football rivalry. Name the fixture."],
+    ["Dream Team (1992)","The 1992 US Olympic men's basketball team, featuring Michael Jordan, Magic Johnson, and Larry Bird, was the first to include active NBA professionals. Name this team."],
+    ["The Decision","LeBron James announced his move from the Cleveland Cavaliers to the Miami Heat in 2010 via a widely-criticised prime-time ESPN TV special. Name the broadcast."],
+    ["Splash Brothers","The nickname for Golden State Warriors teammates Stephen Curry and Klay Thompson, celebrated for their record-breaking three-point shooting. Name the duo's nickname."],
+    ["The Last Dance","A 2020 documentary miniseries chronicling Michael Jordan's final season with the Chicago Bulls in 1997-98, built around previously unseen behind-the-scenes footage. Name the series."],
+    ["Malice at the Palace","A infamous 2004 brawl between players and fans during a Pacers-Pistons NBA game in Auburn Hills, Michigan, leading to lengthy suspensions. Name the incident."],
+    ["Lob City","The nickname for the LA Clippers team of the early 2010s built around the alley-oop dunking chemistry of Chris Paul, Blake Griffin, and DeAndre Jordan. Name the nickname."],
+    ["The Process","The Philadelphia 76ers' strategy under GM Sam Hinkie of deliberately fielding weak teams to accumulate high draft picks, eventually landing Joel Embiid. Name this strategy."],
+    ["Black Mamba","Kobe Bryant's self-chosen nickname, inspired by the deadly snake in Quentin Tarantino's 'Kill Bill,' reflecting his relentless competitive mentality. Name the nickname."],
+    ["James Naismith","A Canadian physical education instructor who invented basketball in 1891 at a YMCA training school in Springfield, Massachusetts, using peach baskets as the original hoops. Name him."],
+    ["Wilt Chamberlain's 100-point game","In a 1962 NBA game against the New York Knicks, this Philadelphia Warriors centre scored 100 points, still the single-game scoring record. Name the player/feat."],
+    ["Battle of the Sexes (tennis)","A 1973 exhibition match saw Billie Jean King defeat self-proclaimed male chauvinist Bobby Riggs in straight sets, becoming a landmark moment for women's sports and gender equality. Name the match."],
+    ["Golden Slam","Achieving all four Grand Slam tennis titles and Olympic gold in the same calendar year — a feat accomplished only by Steffi Graf, in 1988. Name this achievement."],
+    ["Calendar Grand Slam (tennis)","Winning all four major tennis titles — Australian Open, French Open, Wimbledon, US Open — in the same calendar year. Name this achievement."],
+    ["Career Grand Slam (tennis)","Winning all four major tennis titles at some point across a career, not necessarily in the same year — achieved by players like Nadal, Federer, and Djokovic. Name this achievement."],
+    ["King of Clay","Rafael Nadal's nickname, earned through his extraordinary dominance at the French Open, which he won a record 14 times. Name the nickname."],
+    ["Hawk-Eye","A computer vision system that tracks a ball's trajectory to adjudicate close line calls, used across tennis, cricket, and other sports. Name the system."],
+    ["Isner–Mahut match (2010 Wimbledon)","John Isner defeated Nicolas Mahut in a first-round match whose final set alone lasted over eight hours, spanning three days and ending 70-68. Name this match."],
+    ["Wimbledon","The oldest tennis tournament in the world, first held in 1877, uniquely still requiring players to wear predominantly white clothing. Name the tournament."],
+    ["French Open","Tennis's clay-court major, held at Roland Garros in Paris, the surface where Rafael Nadal built his legendary dominance. Name the tournament."],
+    ["Rod Laver","The only player to complete the Calendar Grand Slam twice, in 1962 and 1969 — the Australian Open's main stadium is named after him. Name him."],
+    ["Arthur Ashe","The first Black man to win the US Open and Wimbledon singles titles, and a prominent civil rights and AIDS awareness activist — the US Open's main stadium bears his name. Name him."],
+    ["Monaco Grand Prix","A prestigious Formula 1 street race through the narrow, glamorous streets of Monte Carlo, considered part of motorsport's 'Triple Crown.' Name the race."],
+    ["Monza Circuit","Known as the 'Temple of Speed,' this high-speed Italian circuit near Milan hosts Formula 1's Italian Grand Prix, traditionally Ferrari's home race. Name the circuit."],
+    ["Triple Crown of Motorsport","An unofficial achievement of winning the Monaco Grand Prix, the Indianapolis 500, and the 24 Hours of Le Mans — only Graham Hill has completed it. Name this achievement."],
+    ["Formula One World Constructors' Championship","The annual title awarded to the most successful F1 team (rather than driver) based on combined points across both cars. Name this championship."],
+    ["Drag Reduction System (DRS)","An F1 device that opens a flap in the rear wing to reduce drag and boost overtaking, usable only in designated zones when a car is within one second of the one ahead. Name the system."],
+    ["Trulli Train","A term describing a long queue of cars stuck behind a slower driver — coined after Jarno Trulli, known for qualifying well but being overtaken on race day. Name the term."],
+    ["Scuderia Ferrari","Formula 1's oldest and most successful team, founded by Enzo Ferrari, competing continuously in the championship since its first season in 1950. Name the team."],
+    ["Mercedes-AMG Petronas F1 Team","This team dominated Formula 1 from 2014-2020 with Lewis Hamilton, winning eight consecutive Constructors' Championships. Name the team."],
+    ["Bodyline","A controversial England cricket tactic in the 1932-33 Ashes series, bowling fast, short-pitched deliveries at the batsman's body to combat Don Bradman, straining Anglo-Australian relations. Name this tactic."],
+    ["Bazball","The aggressive, high-tempo Test cricket approach adopted by England under captain Ben Stokes and coach Brendon McCullum from 2022. Name this style."],
+    ["Duckworth–Lewis–Stern method","A mathematical formula used to recalculate revised target scores in limited-overs cricket matches interrupted by weather. Name the method."],
+    ["Spirit of Cricket","An informal code encouraging fair play and sportsmanship in cricket beyond the strict laws of the game, formally added to the MCC Laws preamble. Name this concept."],
+    ["The Ashes","The historic Test cricket rivalry between England and Australia, contested for a small terracotta urn since 1882, after a mock obituary declared English cricket 'dead.' Name this series."],
+    ["Tied Test","A Test match with the rarest possible result, where both teams finish level — has happened only twice in cricket history, first in 1960 between Australia and West Indies. Name this result."],
+    ["Indian Premier League","A Twenty20 cricket league founded in 2008, now one of the richest sports leagues in the world by per-match value, blending cricket with Bollywood-style entertainment. Name the league."],
+    ["ICC World Test Championship","A league format introduced in 2019 to determine cricket's best Test-playing nation, culminating in a final between the top two teams over a two-year cycle. Name this championship."],
+    ["Border–Gavaskar Trophy","The Test cricket series played between India and Australia, named after former captains Allan Border and Sunil Gavaskar. Name this trophy."],
+    ["Mankad (run out at the crease)","A form of run-out where the bowler removes the bails before delivering the ball if the non-striking batsman has left the crease early — named after Vinoo Mankad. Name this dismissal."],
+    ["Olympic Games","The world's foremost multi-sport event, revived in its modern form by Pierre de Coubertin in 1896, held every four years. Name this event."],
+  ]
+},
+{
+  cat: "Indian Sports Beyond Cricket",
+  items: [
+    ["India at the Olympics — field hockey","India won six consecutive Olympic gold medals in this sport between 1928 and 1956, a golden era built around a certain legendary centre-forward. Name the sport."],
+    ["Dhyan Chand","Nicknamed 'The Wizard' for his extraordinary stick skills, this hockey player won three Olympic golds and is honoured with India's National Sports Day marking his birthday. Name him."],
+    ["Kabaddi","A contact team sport of ancient Indian origin, where a raider crosses into the opponent's half chanting the sport's name and tries to tag defenders in a single breath. Name the sport."],
+    ["Pro Kabaddi League","A franchise-based professional league, launched in 2014, that transformed kabaddi's popularity in India using an IPL-style television format. Name this league."],
+    ["Viswanathan Anand","India's first grandmaster in chess, this five-time World Chess Champion is widely credited with sparking India's current chess boom. Name him."],
+    ["Chess Olympiad","A biennial team chess tournament organised by FIDE, which India hosted and won gold at (Open section) in 2022 in Chennai. Name this event."],
+    ["D. Gukesh","In 2024, this Chennai-born teenager became the youngest ever undisputed World Chess Champion, defeating Ding Liren. Name him."],
+    ["P. V. Sindhu","This badminton player became the first Indian woman to win an Olympic silver medal (2016 Rio) and later added a bronze (2020 Tokyo), also a former world champion. Name her."],
+    ["Saina Nehwal","This badminton player won bronze at the 2012 London Olympics, becoming the first Indian to win an Olympic medal in the sport, and later reached the world No. 1 ranking. Name her."],
+    ["Badminton in India","This racquet sport, believed to have origins in the game of 'Poona' played in British India, has become one of India's most successful Olympic disciplines in the 21st century. Name the sport."],
+    ["All England Open Badminton Championships","Regarded as badminton's unofficial world championship due to its prestige, and won for the first time by an Indian man (Prakash Padukone) in 1980. Name this tournament."],
+    ["Neeraj Chopra","This javelin thrower won India's first-ever Olympic gold medal in athletics at the Tokyo 2020 Games. Name him."],
+    ["Athletics at 2020 Olympics — men's javelin throw","Neeraj Chopra won gold in this event with a throw of 87.58 metres, India's first Olympic gold in athletics. Name the event."],
+    ["Milkha Singh","Nicknamed 'The Flying Sikh,' this sprinter famously finished fourth in the 400m final at the 1960 Rome Olympics, missing a medal by a fraction of a second. Name him."],
+    ["P. T. Usha","Nicknamed the 'Payyoli Express,' this sprinter narrowly missed an Olympic bronze by 1/100th of a second in the 400m hurdles at the 1984 Los Angeles Games. Name her."],
+    ["Abhinav Bindra","This shooter won India's first individual Olympic gold medal, in the 10m air rifle event at the 2008 Beijing Olympics. Name him."],
+    ["Leander Paes","A tennis player who won an Olympic bronze in singles at Atlanta 1996 and built a hugely successful doubles career, winning multiple Grand Slam doubles titles. Name him."],
+    ["Sania Mirza","India's most successful female tennis player, who reached World No. 1 in doubles and won multiple Grand Slam doubles and mixed doubles titles. Name her."],
+    ["Indian Super League","India's top professional football league, launched in 2014 in an IPL-inspired franchise format, later merged with the I-League structure. Name the league."],
+    ["Sunil Chhetri","India's all-time leading goal-scorer and long-serving national football team captain, among the highest international goal-scorers among active players globally. Name him."],
+    ["Sushil Kumar","This wrestler won bronze at the 2008 Beijing Olympics and silver at 2012 London, becoming the first Indian to win two individual Olympic medals. Name him."],
+    ["Bajrang Punia","An Olympic bronze medallist (Tokyo 2020) in freestyle wrestling, and a multiple-time World Championship medallist in the 65kg category. Name him."],
+    ["Mary Kom","A six-time World Amateur Boxing champion and Olympic bronze medallist (London 2012), regarded as one of the greatest female boxers in history. Name her."],
+    ["Khelo India","A national sports development programme launched by the Government of India in 2018 aimed at promoting grassroots sports and identifying young talent. Name this programme."],
+    ["India at the Commonwealth Games","India has traditionally performed strongly at this quadrennial multi-sport event of Commonwealth nations, especially in wrestling, shooting, and weightlifting. Name this event."],
+  ]
+},
+{
+  cat: "Formula 1 Deep Dive",
+  items: [
+    ["Michael Schumacher","This German driver held the record for most F1 World Championships (7) until Lewis Hamilton equalled it, dominating with Benetton and then Ferrari. Name him."],
+    ["Lewis Hamilton","This British driver equalled Michael Schumacher's record of seven World Championships and holds the record for most career pole positions and race wins. Name him."],
+    ["Max Verstappen","This Dutch driver, the youngest ever F1 race winner at the time of his 2016 Spanish Grand Prix victory, has since won multiple World Championships with Red Bull. Name him."],
+    ["Ayrton Senna","This three-time World Champion and Brazilian icon died in a crash at the 1994 San Marino Grand Prix at Imola, one of F1's darkest weekends. Name him."],
+    ["Senna–Prost rivalry","One of motorsport's most intense rivalries, between Ayrton Senna and Alain Prost, McLaren teammates whose feud included two controversial title-deciding collisions at Suzuka. Name this rivalry."],
+    ["Niki Lauda","This Austrian triple World Champion suffered horrific burns in a 1976 crash at the Nürburgring, then returned to race just six weeks later. Name him."],
+    ["Sebastian Vettel","This German driver won four consecutive World Championships with Red Bull from 2010-2013, at the time the youngest ever champion. Name him."],
+    ["Fernando Alonso","This two-time Spanish World Champion (2005, 2006 with Renault) remains one of the most respected and long-serving drivers on the grid. Name him."],
+    ["Red Bull Racing","Founded by energy-drink magnate Dietrich Mateschitz, this team has won championships with both Sebastian Vettel and Max Verstappen. Name the team."],
+    ["Mercedes-AMG Petronas F1 Team","This works team dominated F1's turbo-hybrid era, winning eight consecutive Constructors' titles from 2014, largely through Lewis Hamilton. Name the team."],
+    ["McLaren","One of F1's oldest and most successful teams, founded by New Zealander Bruce McLaren, home to champions like Senna, Prost, Hamilton, and Häkkinen. Name the team."],
+    ["Silverstone Circuit","Built on a former WWII airfield, this circuit hosted the first-ever Formula 1 World Championship race in 1950 and remains home of the British Grand Prix. Name the circuit."],
+    ["Circuit de Spa-Francorchamps","A long, sweeping circuit in the Belgian Ardennes forest famed for its Eau Rouge corner and unpredictable weather. Name the circuit."],
+    ["Suzuka Circuit","A unique figure-eight-shaped circuit in Japan, site of several championship deciders including the Senna-Prost collisions. Name the circuit."],
+    ["2021 Abu Dhabi Grand Prix","A highly controversial season finale where a contested late safety car restart allowed Max Verstappen to overtake Lewis Hamilton on the last lap and win the title. Name this race."],
+    ["Crashgate","A 2008 Formula 1 scandal in which Renault deliberately crashed driver Nelson Piquet Jr. to manipulate the Singapore Grand Prix in teammate Fernando Alonso's favour. Name this scandal."],
+    ["Spygate (Formula One)","A 2007 scandal in which McLaren was found in possession of confidential Ferrari technical documents, resulting in a record $100 million fine. Name this scandal."],
+    ["Kimi Räikkönen","Nicknamed the 'Iceman' for his famously deadpan radio messages, this Finnish driver won the 2007 World Championship with Ferrari. Name him."],
+    ["Narain Karthikeyan","India's first Formula 1 driver, who raced for Jordan and later HRT. Name him."],
+    ["Racing Point F1 Team","A team that briefly rebranded from Force India before itself transforming into Aston Martin — notable for its controversial 2020 'Pink Mercedes' car. Name the team."],
+    ["Grid girls","Models who traditionally stood on the starting grid holding drivers' national flags and position boards before races, a practice F1 discontinued in 2018. Name this tradition."],
+    ["Team radio","The communication channel between driver and pit wall during races, source of many now-famous quotes broadcast to TV audiences. Name this feature."],
+    ["Pirelli","The Italian tyre manufacturer that has been Formula 1's sole tyre supplier since 2011, using colour-coded compounds to indicate hardness. Name the company."],
+    ["Formula E","An all-electric single-seater racing championship launched in 2014, often run on temporary street circuits in city centres. Name this championship."],
+    ["Buddh International Circuit","Located in Greater Noida, this circuit hosted the Indian Grand Prix from 2011-2013 before it was dropped from the F1 calendar. Name this circuit."],
+  ]
+},
+{
+  cat: "Manchester United & Premier League",
+  items: [
+    ["Manchester United F.C.","Formed originally in 1878 as Newton Heath LYR Football Club, this Manchester club is one of the most widely supported in the world. Name the club."],
+    ["Alex Ferguson","This Scottish manager led Manchester United for over 26 years (1986-2013), winning 13 Premier League titles and two Champions Leagues. Name him."],
+    ["Manchester United 1998-99 season","In this season United won the Premier League, FA Cup, and Champions League — with a dramatic injury-time comeback in the Champions League final — completing an unprecedented Treble. Name this season/achievement."],
+    ["Cristiano Ronaldo","This Portuguese forward rose to global stardom at Manchester United under Alex Ferguson before moves to Real Madrid and Juventus, later returning to United. Name him."],
+    ["Wayne Rooney","Manchester United's all-time leading goalscorer, who broke onto the scene as a teenager at Everton before an era-defining spell at Old Trafford. Name him."],
+    ["David Beckham","A member of United's 'Class of '92,' this midfielder became a global celebrity known for his precision free kicks and later moves to Real Madrid, LA Galaxy, and PSG. Name him."],
+    ["Old Trafford","Manchester United's home stadium since 1910, nicknamed the 'Theatre of Dreams,' with a capacity making it the largest club stadium in England. Name the stadium."],
+    ["Theatre of Dreams","The popular nickname for Manchester United's Old Trafford stadium, reportedly coined by Bobby Charlton. Name this nickname."],
+    ["Manchester City F.C.","Manchester United's cross-city rivals, whose fortunes transformed dramatically after Abu Dhabi-backed ownership took over in 2008, leading to multiple Premier League titles. Name the club."],
+    ["City of Manchester Stadium (Etihad Stadium)","Built originally for the 2002 Commonwealth Games, this stadium became Manchester City's home ground and is now known by its sponsored name, the Etihad Stadium. Name this stadium."],
+    ["Liverpool F.C.","One of England's most decorated clubs, based at Anfield, historically United's fiercest rival, managed to great success by Jürgen Klopp in the 2010s-20s. Name the club."],
+    ["Anfield","Liverpool F.C.'s home stadium since 1892, famed for its passionate atmosphere and the pre-match anthem 'You'll Never Walk Alone.' Name the stadium."],
+    ["You'll Never Walk Alone","Originally from the musical 'Carousel' and popularised by Gerry and the Pacemakers, this song is sung by Liverpool fans before every home match at Anfield. Name the song."],
+    ["Arsenal F.C.","A North London club managed to their greatest modern success by Arsène Wenger, including the unbeaten 'Invincibles' season of 2003-04. Name the club."],
+    ["Chelsea F.C.","A West London club whose fortunes were transformed by Roman Abramovich's ownership from 2003, winning multiple Premier League titles and two Champions Leagues. Name the club."],
+    ["Stamford Bridge","Chelsea F.C.'s home stadium in West London, in use by the club since 1905. Name the stadium."],
+    ["Premier League","England's top football division, formed in 1992 when clubs broke away from the Football League to negotiate their own lucrative broadcasting deals. Name this league."],
+    ["Jürgen Klopp","This German manager led Liverpool to Premier League and Champions League titles through his high-intensity 'gegenpressing' style, ending the club's 30-year league title wait in 2020. Name him."],
+    ["Pep Guardiola","This Spanish manager, who pioneered tiki-taka at Barcelona, later led Manchester City to unprecedented domestic dominance including a Treble in 2022-23. Name him."],
+    ["Emirates Stadium","Arsenal's home ground since 2006, replacing their historic former stadium Highbury. Name this stadium."],
+  ]
+},
+];
+
+const tabsEl = document.getElementById('tabs');
+const mainEl = document.getElementById('main');
+
+function slug(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,'-'); }
+
+DATA.forEach((cat, ci) => {
+  const btn = document.createElement('button');
+  btn.textContent = cat.cat;
+  btn.dataset.target = slug(cat.cat);
+  if(ci===0) btn.classList.add('active');
+  btn.onclick = () => switchTab(slug(cat.cat));
+  tabsEl.appendChild(btn);
+
+  const section = document.createElement('section');
+  section.className = 'cat' + (ci===0 ? ' active' : '');
+  section.id = slug(cat.cat);
+
+  const head = document.createElement('div');
+  head.className = 'cat-head';
+  head.innerHTML = `<h2>${cat.cat}</h2><span class="count">${cat.items.length} questions</span>`;
+  section.appendChild(head);
+
+  cat.items.forEach((item, i) => {
+    const [topic, question] = item;
+    const cleanTopic = topic.split(' — ')[0].split(' (2020')[0];
+    const wikiTitle = cleanTopic.replace(/ /g,'_');
+    const uid = `${slug(cat.cat)}-${i}`;
+    const card = document.createElement('div');
+    card.className = 'qcard';
+    card.innerHTML = `
+      <button class="qbtn" type="button">
+        <span class="qnum">${String(i+1).padStart(2,'0')}</span>
+        <span class="qtext"><span class="topic-tag">Connect</span>${question}</span>
+      </button>
+      <div class="answer">
+        <span class="lead">Answer —</span>${topic}
+        <div class="media-row">
+          <div class="media-thumb" id="thumb-${uid}"><div class="spin"></div></div>
+          <div class="media-blurb" id="blurb-${uid}">Loading a snapshot from Wikipedia…</div>
+        </div>
+        <button class="listen-btn" id="listen-${uid}" type="button">🔊 Read this out</button>
+        <div class="audio-note">Text-to-speech uses your device's built-in voice — works offline, no download needed.</div>
+        <br><a class="wiki" href="https://en.wikipedia.org/wiki/${encodeURIComponent(wikiTitle)}" target="_blank" rel="noopener">Read more on Wikipedia →</a>
+      </div>`;
+
+    const qbtn = card.querySelector('.qbtn');
+    let mediaLoaded = false;
+    qbtn.onclick = () => {
+      card.classList.toggle('revealed');
+      if(card.classList.contains('revealed') && !mediaLoaded){
+        mediaLoaded = true;
+        loadMedia(wikiTitle, uid);
+      }
+    };
+
+    const listenBtn = card.querySelector(`#listen-${uid}`);
+    listenBtn.onclick = (e) => {
+      e.stopPropagation();
+      speakAnswer(topic, question, listenBtn);
+    };
+
+    section.appendChild(card);
+  });
+
+  mainEl.appendChild(section);
+});
+
+async function loadMedia(wikiTitle, uid){
+  const thumbEl = document.getElementById(`thumb-${uid}`);
+  const blurbEl = document.getElementById(`blurb-${uid}`);
+  try{
+    const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(wikiTitle)}`);
+    if(!res.ok) throw new Error('not found');
+    const data = await res.json();
+    if(data.thumbnail && data.thumbnail.source){
+      const img = document.createElement('img');
+      img.src = data.thumbnail.source;
+      img.alt = wikiTitle;
+      img.onload = () => img.classList.add('loaded');
+      thumbEl.innerHTML = '';
+      thumbEl.appendChild(img);
+    } else {
+      thumbEl.innerHTML = '🎬';
+      thumbEl.style.fontSize = '28px';
+    }
+    blurbEl.textContent = data.extract ? (data.extract.length > 180 ? data.extract.slice(0,177)+'…' : data.extract) : 'No summary available.';
+  }catch(err){
+    thumbEl.innerHTML = '—';
+    blurbEl.textContent = 'Could not load preview (check your connection).';
+  }
+}
+
+let currentUtterance = null;
+function speakAnswer(topic, question, btn){
+  if(!('speechSynthesis' in window)){
+    btn.textContent = '🔇 Not supported on this device';
+    return;
+  }
+  if(speechSynthesis.speaking){
+    speechSynthesis.cancel();
+    document.querySelectorAll('.listen-btn.playing').forEach(b => { b.classList.remove('playing'); b.textContent = '🔊 Read this out'; });
+    if(currentUtterance && currentUtterance.__btn === btn) return;
+  }
+  const plain = question.replace(/<[^>]+>/g,'');
+  const utter = new SpeechSynthesisUtterance(`${plain} ... Answer: ${topic}.`);
+  utter.rate = 0.98;
+  utter.__btn = btn;
+  utter.onstart = () => { btn.classList.add('playing'); btn.textContent = '⏸ Playing…'; };
+  utter.onend = () => { btn.classList.remove('playing'); btn.textContent = '🔊 Read this out'; };
+  currentUtterance = utter;
+  speechSynthesis.speak(utter);
+}
+
+function switchTab(id){
+  document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.dataset.target === id));
+  document.querySelectorAll('section.cat').forEach(s => s.classList.toggle('active', s.id === id));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
